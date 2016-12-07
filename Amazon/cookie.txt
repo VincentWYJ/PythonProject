@@ -2,5 +2,5 @@
 # http://curl.haxx.se/rfc/cookie_spec.html
 # This is a generated file!  Do not edit.
 
-.amazon.co.jp	TRUE	/	FALSE	2111796662	session-id	351-5640969-0743740
-.amazon.co.jp	TRUE	/	FALSE	2111796662	session-id-time	2111796662l
+.amazon.co.jp	TRUE	/	FALSE	2111820631	session-id	352-0719749-8017921
+.amazon.co.jp	TRUE	/	FALSE	2111820631	session-id-time	2111820631l
