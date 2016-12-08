@@ -10,9 +10,9 @@ class MininovaSpider(CrawlSpider):
     rules = [Rule(LinkExtractor(allow=['/tor/\d+']), 'parse_torrent')]
 
     def parse_torrent(self, response):
-        torrent = TorrentItem()
-        torrent['url'] = response.url
-        torrent['name'] = response.xpath("//h1/text()").extract()
-        torrent['description'] = response.xpath("//div[@id='description']/text()").extract()
-        torrent['size'] = response.xpath("//div[@id='specifications']/p[2]/text()[2]").extract()
-        return torrent
+        item = TorrentItem()
+        item['url'] = response.url
+        item['name'] = response.xpath("//h1/text()").extract()
+        item['description'] = response.xpath("//div[@id='description']/text()").extract()
+        item['size'] = response.xpath("//div[@id='specifications']/p[2]/text()[2]").extract()
+        return item
