@@ -16,6 +16,7 @@ table_amazon = address_data.sheet_by_name('Amazon')
 # 获取第一行数据——AmazonJP的登录与某一产品网址
 address_jp =  table_amazon.row_values(0)
 
+
 ## 网站登录操作
 login_url = address_jp[1]
 values = {'email': 'wyjxjm@126.com', 'password': '324712', 'submit': 'Login'}
