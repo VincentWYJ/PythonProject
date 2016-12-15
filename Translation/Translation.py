@@ -15,8 +15,8 @@ def translate(text, f='ja', t='zh-cn'):
     html = response.read()
     p = re.compile(r"(?<=TRANSLATED_TEXT=).*?;")
     m = p.search(html.decode())
-    text_2 = m.group(0).strip(';')
-    return text_2
+    text = m.group(0).strip(';').strip("'")
+    return text
 
 print(translate('こんにちは'))
 print(translate('こんにちは', 'ja', 'en'))
