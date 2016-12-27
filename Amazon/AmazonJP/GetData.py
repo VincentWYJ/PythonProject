@@ -1,31 +1,34 @@
 # -*- coding: utf-8 -*-
 
 
+# 1 ----------------模块导入
 import re
 import datetime
 from bs4 import BeautifulSoup
+import sys
+sys.path.append("..")
 from Utils import *
 
 
-exchange_rate = 15 # 汇率
-profit_rate = 0.3 # 利润率
-packet_weight = 150 # 包装重量
+# 2 ----------------常量定义
+# 汇率(API)
+exchange_rate = 15
+# 利润率(可调)
+profit_rate = 0.3
+# 包装重量(克)
+packet_weight = 150
+# 产地后缀
 title_append = '日本制造'
+# 描述头
 description_start = 'xxx'
+# 描述尾
 description_end = 'yyy'
 
 
-url = '2.htm'
-html_file = open(url, encoding='UTF-8')
+# 3 ----------------数据获取
+html_url = r'Html\2.htm'
+html_file = open(html_url, encoding='UTF-8')
 bs_obj = BeautifulSoup(html_file.read(), 'html.parser')
-
-
-for script in bs_obj(["script", "style"]):
-    script.extract()
-
-
-product_info = {}
-
 
 println('打印获取数据结果------------------------------------------------')
 
@@ -51,7 +54,7 @@ println(brand)
 print('src_price--原价: ')
 src_price_node = bs_obj.find('', {'id': 'priceblock_ourprice'})
 if src_price_node:
-    src_price = int(src_price_node.get_text().replace('￥', '').strip())
+    src_price = int(src_price_node.get_text().replace('￥', '').replace(',', '').strip())
 else:
     src_price = 0
 println(src_price)
@@ -104,7 +107,7 @@ for feature in feature_list:
 print('image_list--图片地址: ')
 image_list = []
 image_node = bs_obj.find('', {'id': 'altImages'})
-if len(image_node) != 0:
+if len(image_node) > 0:
     for image in image_node.find_all('img'):
         if image != '\n':
             image_list.append(image.get('src').replace('SS40', 'SL780'))
@@ -116,7 +119,7 @@ print('detail_dict--商品详细: ')
 detail_label_list = []
 detail_value_list = []
 detail_node = bs_obj.find('', {'id': 'prodDetails'})
-if len(detail_node) != 0:
+if len(detail_node) > 0:
     for label in detail_node.find_all('td', {'class': 'label'}):
         if label != '\n':
             detail_label_list.append(translate(label.get_text().strip().replace('\n', '')))
@@ -132,7 +135,7 @@ print('description_list--商品图片描述: ')
 description_image_list = []
 description_node = bs_obj.find('', {'id': 'productDescription'})
 replace_reg = re.compile(r'_UX...')
-if len(description_node) != 0:
+if len(description_node) > 0:
     for img in description_node.find_all('img'):
         if img != '\n':
             img = replace_reg.sub('_UX780', img.get('src'))
@@ -145,7 +148,7 @@ print('question_dict--商品问答环节: ')
 question_list = []
 answer_list = []
 question_node = bs_obj.find('', {'id': 'cf-ask-cel'})
-if len(question_node) != 0:
+if len(question_node) > 0:
     for question in question_node.find_all('a', href=re.compile(r'.*asin.*')):
         if question != '\n':
             question_list.append(translate(question.get_text().strip()))
@@ -161,7 +164,7 @@ print('comment_image_list--客户图片评论: ')
 comment_image_list = []
 comments_node = bs_obj.find('', {'id': 'revMH'})
 replace_reg = re.compile(r'_SL...')
-if len(comments_node) != 0:
+if len(comments_node) > 0:
     for image in comments_node.find_all('img'):
         if image != '\n':
             image = replace_reg.sub('_SL780', image.get('src'))
@@ -185,6 +188,9 @@ for text in comment_text_list:
 # 4 填充淘宝表格
 
 println('打印写入数据结果------------------------------------------------')
+
+# 商品总信息, 格式为dict--字典, 访问格式p[key] = value
+product_info = {}
 
 # 4.1 宝贝名称
 title = title_append + title

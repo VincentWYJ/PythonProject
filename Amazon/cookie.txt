@@ -1,6 +1,0 @@
-# Netscape HTTP Cookie File
-# http://curl.haxx.se/rfc/cookie_spec.html
-# This is a generated file!  Do not edit.
-
-.amazon.co.jp	TRUE	/	FALSE	2111835369	session-id	351-9027056-0086956
-.amazon.co.jp	TRUE	/	FALSE	2111835369	session-id-time	2111835369l
