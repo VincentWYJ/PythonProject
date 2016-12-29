@@ -27,7 +27,7 @@ description_start = 'xxx'
 description_end = 'yyy'
 
 
-println('打印获取数据------------------------------------------------')
+println('\n\n打印获取数据------------------------------------------------')
 
 # 3 ----------------数据获取
 xlsx_file = xlrd.open_workbook('Htmls/Htmls.xlsx')
@@ -204,9 +204,9 @@ if len(comment_text_list) == 0:
     println('无')
 
 
-println('打印写入数据------------------------------------------------')
+println('\n\n打印写入数据------------------------------------------------')
 
-# 4 填充淘宝表格
+# 4 ----------------填充淘宝表格
 
 # 商品总信息, 格式为dict--字典, 访问格式p[key] = value
 product_info_dict = {}
@@ -339,12 +339,15 @@ print('商品信息列表形式: ')
 println(product_info_list)
 
 
-# 5 数据写入csv
+println('\n\n打印表格数据------------------------------------------------')
+
+# 5 ----------------数据写入csv
 item_file = open('Items.csv', 'a+', newline='')
 item_writer = csv.writer(item_file, dialect='excel')
 item_writer.writerow(product_info_list)
 item_file.close()
 
+print('写入后表格内容: ')
 item_file = open('Items.csv', 'r')
 item_reader = csv.reader(item_file)
 for item in item_reader:
