@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 
-# 模块导入
+# 1----------------模块导入
 import re
 import urllib
 
 
-# 翻译方法
+# 2----------------翻译方法
 def translate(text, f='ja', t='zh-cn'):
     url = 'http://translate.google.cn'
     values = {'hl': 'zh-CN', 'ie': 'UTF-8', 'text': text, 'langpair': '%s|%s' % (f, t)}
@@ -20,13 +20,16 @@ def translate(text, f='ja', t='zh-cn'):
     p = re.compile(r'(?<=TRANSLATED_TEXT=).*?;')
     m = p.search(html.decode())
     text = m.group(0).strip(';').strip('\'')
+
     return text
 
-print(translate('Hello'))
+# 2.1 方法测试
+# print(translate('Hello'))
 
 
-# 打印方法
+# 3----------------打印方法
 def println(text):
     print(str(text) + '\n')
 
-println('Hello')
+# 3.1 方法测试
+# println('Hello')
