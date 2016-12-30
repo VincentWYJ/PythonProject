@@ -24,9 +24,9 @@ def startMutilThread():
     for html_url in html_list:
         thread_list.append(threading.Thread(target=pullAndPushData, args=(html_url,)))
     for thread in thread_list:
-        # thread.setDaemon(True)
+        thread.setDaemon(True)
         thread.start()
-        # thread.join()
+    thread.join()
 
 
 # 4----------------初始化方法
