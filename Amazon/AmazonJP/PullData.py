@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import sys
 sys.path.append('..')
 from Utils import *
+from GenDescription import *
 
 
 # 2 ----------------常量定义
@@ -92,7 +93,7 @@ def pullData(html_url):
     println(u'出售方式: %d' % item_type)
 
     # 3.8 宝贝价格
-    # 3.8.1 原价
+    # 原价
     print(u'src_price--原价: ')
     src_price = 0
     src_price_node = bs_obj.find('', {'id': 'priceblock_ourprice'})
@@ -100,7 +101,7 @@ def pullData(html_url):
         src_price = int(src_price_node.get_text().replace('￥', '').replace(',', '').strip())
     println(src_price)
 
-    # 3.8.2 配送费
+    # 配送费
     print(u'ship_price--配送费: ')
     ship_price = 500
     ship_price_node = bs_obj.find('', {'id': 'price-shipping-message'})
@@ -111,7 +112,7 @@ def pullData(html_url):
                 ship_price = 0
     println(ship_price)
 
-    # 3.8.3 产品详细
+    # 产品详细
     print(u'detail_dict--商品详细: ')
     detail_label_list = []
     detail_value_list = []
@@ -131,7 +132,7 @@ def pullData(html_url):
     if len(detail_label_list) == 0 or len(detail_value_list) == 0:
         println('无')
 
-    # 3.8.4 价格计算
+    # 价格计算
     weight = detail_value_list[detail_label_list.index(u'重量')]
     weight = int(weight.replace(u'克', '').strip())
     if (weight + packet_weight) < 500:
@@ -221,6 +222,14 @@ def pullData(html_url):
     product_info_list.append(has_showcase)
     println(u'橱窗推荐: %d' % has_showcase)
 
+    # 3.20 开始时间
+    now = datetime.datetime.today()
+    list_time = now.strftime('%Y/%m/%d %H:%M')
+    product_info_dict['list_time'] = list_time
+    product_info_list.append(list_time)
+    println(u'开始时间: %s' % list_time)
+
+    # 3.21 description
     # 品牌
     print(u'brand--品牌: ')
     brand = ''
@@ -236,7 +245,8 @@ def pullData(html_url):
     if feature_node and len(feature_node) > 0:
         for feature_text in feature_node.find_all('span'):
             if feature_text != '\n':
-                feature = translate(feature_text.get_text().replace('\n', '').replace('\'', '').strip())
+                feature = translate(feature_text.get_text().strip().replace('\n', '').replace('\'', '')
+                                    .replace('[', '').replace(']', '').replace('【', '').replace('】', ''))
                 feature_list.append(feature)
                 println(feature)
     if len(feature_list) == 0:
@@ -315,6 +325,10 @@ def pullData(html_url):
                 println(comment)
     if len(comment_text_list) == 0:
         println('无')
+
+    description = genDescription(feature_list, image_list, description_image_list, comment_image_list)
+    product_info_dict['description'] = description
+    product_info_list.append(description)
 
     print(u'商品信息字典形式: ')
     println(product_info_dict)

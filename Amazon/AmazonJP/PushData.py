@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-# 1----------------模块导入
+# 1 ----------------模块导入
 import csv
 import sys
 sys.path.append('..')
