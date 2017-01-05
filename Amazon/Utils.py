@@ -3,7 +3,7 @@
 
 # 1----------------模块导入
 import re
-import urllib
+import urllib.parse, urllib.request
 
 
 # 2----------------翻译方法

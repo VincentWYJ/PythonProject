@@ -5,6 +5,8 @@
 import re
 import datetime
 from bs4 import BeautifulSoup
+import http.cookiejar
+import urllib.request, urllib.parse, urllib.error
 import sys
 sys.path.append('..')
 from Utils import *
@@ -24,6 +26,15 @@ title_append = u'日本制造'
 description_start = 'xxx'
 # 描述尾
 description_end = 'yyy'
+# 模拟浏览器登录
+values = {'email': 'wyjxjm@126.com', 'password': '324712', 'submit': 'Login'}
+postdata = urllib.parse.urlencode(values).encode()
+user_agent = r'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'
+headers = {'User-Agent': user_agent, 'Connection': 'keep-alive'}
+cookie_filename = 'cookie.txt'
+cookie = http.cookiejar.MozillaCookieJar(cookie_filename)
+handler = urllib.request.HTTPCookieProcessor(cookie)
+opener = urllib.request.build_opener(handler)
 
 
 # 3 ----------------数据获取
@@ -37,8 +48,16 @@ def pullData(html_url):
     product_info_dict = {}
 
     # 提取网页内容
-    html_url = 'Htmls/' + html_url
-    html_file = open(html_url, encoding='UTF-8')
+    if 'html' in html_url:
+        html_url = 'Htmls/' + html_url
+        html_file = open(html_url, encoding='UTF-8')
+    else:
+        try:
+            request = urllib.request.Request(html_url, postdata, headers)
+            html_file = opener.open(request)
+        except urllib.error.URLError as e:
+            print(e.code, ':', e.reason)
+        cookie.save(ignore_discard=True, ignore_expires=True)
     bs_obj = BeautifulSoup(html_file.read(), 'html.parser')
 
     # 排除script脚本
