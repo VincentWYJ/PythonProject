@@ -152,8 +152,12 @@ def pullData(html_url):
         println('无')
 
     # 价格计算
-    weight = detail_value_list[detail_label_list.index(u'重量')]
-    weight = int(weight.replace(u'克', '').strip())
+    weight_temp = detail_value_list[detail_label_list.index(u'重量')]
+    if u'公斤' in weight_temp[0]:
+        weight = 1000*(int(weight_temp[0].replace(u'公斤', '').strip()))
+    else:
+        weight = int(weight_temp[0].replace(u'克', '').strip())
+
     if (weight + packet_weight) < 500:
         ems = 100
     else:
@@ -187,8 +191,9 @@ def pullData(html_url):
     println(u'宝贝数量: %d' % num)
 
     # 3.11 有效期
-    now = datetime.datetime.today() + datetime.timedelta(days=6)
-    valid_thru = now.strftime('%Y/%m/%d %H:%M')
+    #now = datetime.datetime.today() + datetime.timedelta(days=6)
+    #valid_thru = now.strftime('%Y/%m/%d %H:%M')
+    valid_thru = 7 #有效期是数字不是日期
     product_info_dict['valid_thru'] = valid_thru
     product_info_list.append(valid_thru)
     println(u'有效期: %s' % valid_thru)

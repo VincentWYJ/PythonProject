@@ -9,6 +9,7 @@ from Utils import *
 from PullHtml import pullHtml
 from PullData import pullData
 from PushData import pushData
+import time
 
 
 # 2 ----------------数据获取与写入
@@ -26,6 +27,7 @@ def startMutilThread():
     for thread in thread_list:
         thread.setDaemon(True)
         thread.start()
+        time.sleep(20)
     thread.join()
 
 
