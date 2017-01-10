@@ -27,7 +27,7 @@ def startMutilThread():
     for thread in thread_list:
         thread.setDaemon(True)
         thread.start()
-        time.sleep(20)
+        # time.sleep(20)
     thread.join()
 
 

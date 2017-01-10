@@ -11,6 +11,7 @@ import sys
 sys.path.append('..')
 from Utils import *
 from GenDescription import *
+from GenImage import *
 
 
 # 2 ----------------常量定义
@@ -46,6 +47,9 @@ def pullData(html_url):
 
     # 商品总信息字典
     product_info_dict = {}
+
+    # 所有图片链接列表
+    product_image_list = []
 
     # 提取网页内容
     if 'html' in html_url:
@@ -288,6 +292,8 @@ def pullData(html_url):
                 println(image)
     if len(image_list) == 0:
         println(u'无')
+    else:
+        product_image_list += image_list
 
     # 商品图片描述
     print(u'description_list--商品图片描述: ')
@@ -302,6 +308,8 @@ def pullData(html_url):
                 println(image)
     if len(description_image_list) == 0:
         println(u'无')
+    else:
+        product_image_list += description_image_list
 
     # 商品问答环节
     print(u'question_dict--商品问答环节: ')
@@ -334,6 +342,8 @@ def pullData(html_url):
                 println(image)
     if len(comment_image_list) == 0:
         println(u'无')
+    else:
+        product_image_list += comment_image_list
 
     # 客户文字评论
     print(u'comment_text_list--客户文字评论: ')
@@ -358,6 +368,8 @@ def pullData(html_url):
     println(product_info_dict)
     print(u'商品信息列表形式: ')
     println(product_info_list)
+
+    genImage(product_image_list)
 
     return product_info_list
 
