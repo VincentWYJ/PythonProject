@@ -2,8 +2,6 @@
 # http://curl.haxx.se/rfc/cookie_spec.html
 # This is a generated file!  Do not edit.
 
-.amazon.co.jp	TRUE	/	FALSE	2082726001	session-id	354-6780537-3950907
+.amazon.co.jp	TRUE	/	FALSE	2082726001	session-id	354-6954462-1497737
 .amazon.co.jp	TRUE	/	FALSE	2082726001	session-id-time	2082726001l
-.amazon.co.jp	TRUE	/	FALSE	2114431062	session-token	tctCUYWoVqnR4ftVHWrwiHG36M7XATWZh0QygAnORwfBXBWzuN+kHst4foeqaym8SfR8U0vV1zuhKLSHx1f2mAtnZOOmzeYmTitGENxKcYveb+dCpojvIyVnvD8rV4vP9g/ucejPLZhPraYCPMxEpWgxI0A4auFLDwvnacR4FS1LuSc6+4ARy9+f7d4szDQUljEdbFLTVXojhCtAS4qqBL/CMwCL9lJoPZPKYU48i/XaEf5hNIJOUGxGk2h3RRZL
-.amazon.co.jp	TRUE	/	FALSE	2082726001	ubid-acbjp	351-3476302-3213409
-.amazon.co.jp	TRUE	/	FALSE	2082726001	x-wl-uid	1abRGWUCY+o7i22sqns4sODCJgzEFL2oyyCK85PvkB+/yJQbyB0OzDoJ5NmmVFa1WMsBWZJ0L8oI=
+.amazon.co.jp	TRUE	/	FALSE	2082726001	x-wl-uid	1hlCppCx4KP8mw2Bw9qkEHGfOWzJGVTRa21sZBmU7A9yUuigcmu7YOqzpEIQkVp1rnT3eCuz0AZI=
