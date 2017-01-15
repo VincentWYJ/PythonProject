@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 import http.cookiejar
 import urllib.request, urllib.parse, urllib.error
 import sys
+import threading
+import time
 sys.path.append('..')
 from Utils import *
 from GenDescription import *
@@ -364,12 +366,31 @@ def pullData(html_url):
     product_info_dict['description'] = description
     product_info_list.append(description)
 
+    # 新图片下载与路径写入csv
+    asin_number = bs_obj.find('', {'name': 'ASIN'})['value']
+    thread = threading.Thread(target=genImage, name=str(asin_number), args=(product_image_list, str(asin_number)))
+    thread.setDaemon(True)
+    thread.start()
+    # time.sleep(20)
+    thread.join()
+
+    new_picture_con = ''
+    new_picture_temp = '805567564a7cbdc' + str(asin_number) + 'i1' + ':1:i2:|;'
+    for i in list(range(len(product_image_list))):
+        if i < 10:
+            i1 = '0' + str(i)
+        else:
+            i1 = str(i)
+        i2 = str(i)
+        new_picture_con += new_picture_temp.replace('i1', i1).replace('i2', i2)
+    for ii in list(range(7)):
+        product_info_list.append('')
+    product_info_list.append(new_picture_con)
+
     print(u'商品信息字典形式: ')
     println(product_info_dict)
     print(u'商品信息列表形式: ')
     println(product_info_list)
-
-    genImage(product_image_list)
 
     return product_info_list
 

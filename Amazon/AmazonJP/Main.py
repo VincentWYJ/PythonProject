@@ -10,6 +10,8 @@ from PullHtml import pullHtml
 from PullData import pullData
 from PushData import pushData
 import time
+import os
+import shutil
 
 
 # 2 ----------------数据获取与写入
@@ -27,10 +29,17 @@ def startMutilThread():
     for thread in thread_list:
         thread.setDaemon(True)
         thread.start()
-        # time.sleep(20)
+        time.sleep(20)
     thread.join()
 
 
 # 4 ----------------初始化方法
 if __name__ == '__main__':
+    # 重置下载图片存在目录
+    dir_path = 'Items'
+    if os.path.exists(dir_path):
+        shutil.rmtree(dir_path)
+    os.mkdir(dir_path)
+
+    # 开启多线程获取网页信息
     startMutilThread()
