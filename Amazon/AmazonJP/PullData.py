@@ -374,7 +374,35 @@ def pullData(html_url):
     # time.sleep(20)
     thread.join()
 
-    new_picture_con = ''
+    cateProps = ''  # 宝贝属性
+    product_info_dict['cateProps'] = cateProps
+    product_info_list.append(cateProps)
+
+    postage_id = 5352276030  # 邮费模版ID
+    product_info_dict['postage_id'] = postage_id
+    product_info_list.append(postage_id)
+
+    has_discount = 0  # 会员打折
+    product_info_dict['has_discount'] = has_discount
+    product_info_list.append(has_discount)
+
+    modified = list_time  # 修改时间
+    product_info_dict['modified'] = modified
+    product_info_list.append(modified)
+
+    upload_fail_msg = ''  # 上传状态
+    product_info_dict['upload_fail_msg'] = upload_fail_msg
+    product_info_list.append(upload_fail_msg)
+
+    picture_status = '1;1;1;1;1;'  # 图片状态
+    product_info_dict['picture_status'] = picture_status
+    product_info_list.append(picture_status)
+
+    auction_point = 0  # 返点比例
+    product_info_dict['auction_point'] = auction_point
+    product_info_list.append(auction_point)
+
+    picture = ''
     new_picture_temp = '805567564a7cbdc' + str(asin_number) + 'i1' + ':1:i2:|;'
     for i in list(range(len(product_image_list))):
         if i < 10:
@@ -382,10 +410,145 @@ def pullData(html_url):
         else:
             i1 = str(i)
         i2 = str(i)
-        new_picture_con += new_picture_temp.replace('i1', i1).replace('i2', i2)
-    for ii in list(range(7)):
-        product_info_list.append('')
-    product_info_list.append(new_picture_con)
+        picture += new_picture_temp.replace('i1', i1).replace('i2', i2)
+    product_info_dict['picture'] = picture
+    product_info_list.append(picture)
+
+    video = ''  # 视频
+    product_info_dict['video'] = video
+    product_info_list.append(video)
+
+    skuProps = ''  # 销售属性组合
+    product_info_dict['skuProps'] = skuProps
+    product_info_list.append(skuProps)
+
+    inputPids = ''  # 用户输入ID串
+    product_info_dict['inputPids'] = inputPids
+    product_info_list.append(inputPids)
+
+    inputValues = ''  # 用户输入名-值对
+    product_info_dict['inputValues'] = inputValues
+    product_info_list.append(inputValues)
+
+    outer_id = detail_value_list[detail_label_list.index(u'ASIN')]  # 商家编码
+    product_info_dict['outer_id'] = outer_id
+    product_info_list.append(outer_id)
+
+    propAlias = ''  # 销售属性别名
+    product_info_dict['propAlias'] = propAlias
+    product_info_list.append(propAlias)
+
+    auto_fill = ''  # 代充类型
+    product_info_dict['auto_fill'] = auto_fill
+    product_info_list.append(auto_fill)
+
+    num_id = '543000000000'  # 数字ID
+    product_info_dict['num_id'] = num_id
+    product_info_list.append(num_id)
+
+    local_cid = '-1'  # 本地ID
+    product_info_dict['local_cid'] = local_cid
+    product_info_list.append(local_cid)
+
+    navigation_type = 2  # 宝贝分类
+    product_info_dict['navigation_type'] = navigation_type
+    product_info_list.append(navigation_type)
+
+    user_name = 'scjmanbuman'  # 用户名称
+    product_info_dict['user_name'] = user_name
+    product_info_list.append(user_name)
+
+    syncStatus = '1'  # 宝贝状态
+    product_info_dict['syncStatus'] = syncStatus
+    product_info_list.append(syncStatus)
+
+    is_lighting_consigment = '80'  # 闪电发货
+    product_info_dict['is_lighting_consigment'] = is_lighting_consigment
+    product_info_list.append(is_lighting_consigment)
+
+    is_xinpin = '248'  # 新品
+    product_info_dict['is_xinpin'] = is_xinpin
+    product_info_list.append(is_xinpin)
+
+    foodparame = ''  # 食品专项
+    product_info_dict['foodparame'] = foodparame
+    product_info_list.append(foodparame)
+
+    features = 'mysize_tp:0'  # 尺码库
+    product_info_dict['features'] = features
+    product_info_list.append(features)
+
+    buyareatype = '1'  # 采购地
+    product_info_dict['buyareatype'] = buyareatype
+    product_info_list.append(buyareatype)
+
+    global_stock_type = ''  # 库存类型
+    product_info_dict['global_stock_type'] = global_stock_type
+    product_info_list.append(global_stock_type)
+
+    global_stock_country = '日本'  # 国家地区
+    product_info_dict['global_stock_country'] = global_stock_country
+    product_info_list.append(global_stock_country)
+
+    sub_stock_type = '1'  # 库存计数
+    product_info_dict['sub_stock_type'] = sub_stock_type
+    product_info_list.append(sub_stock_type)
+
+    item_size = 'bulk:0.000000'  # 物流体积
+    product_info_dict['item_size'] = item_size
+    product_info_list.append(item_size)
+
+    item_weight = weight + packet_weight  # 物流重量
+    product_info_dict['item_weight'] = item_weight
+    product_info_list.append(item_weight)
+
+    sell_promise = '0'  # 退换货承诺
+    product_info_dict['sell_promise'] = sell_promise
+    product_info_list.append(sell_promise)
+
+    custom_design_flag = ''  # 定制工具
+    product_info_dict['custom_design_flag'] = custom_design_flag
+    product_info_list.append(custom_design_flag)
+
+    wireless_desc = ''  # 无线详情
+    product_info_dict['wireless_desc'] = wireless_desc
+    product_info_list.append(wireless_desc)
+
+    barcode = ''  # 商品条形码
+    product_info_dict['barcode'] = barcode
+    product_info_list.append(barcode)
+
+    sku_barcode = ''  # sku 条形码
+    product_info_dict['sku_barcode'] = sku_barcode
+    product_info_list.append(sku_barcode)
+
+    newprepay = '0'  # 7天退货
+    product_info_dict['newprepay'] = newprepay
+    product_info_list.append(newprepay)
+
+    subtitle = ''  # 宝贝卖点
+    product_info_dict['subtitle'] = subtitle
+    product_info_list.append(subtitle)
+
+    cpv_memo = ''  # 属性值备注
+    product_info_dict['cpv_memo'] = cpv_memo
+    product_info_list.append(cpv_memo)
+
+    input_custom_cpv = ''  # 自定义属性值
+    product_info_dict['input_custom_cpv'] = input_custom_cpv
+    product_info_list.append(input_custom_cpv)
+
+    qualification = ''  # 商品资质
+    product_info_dict['qualification'] = qualification
+    product_info_list.append(qualification)
+
+    add_qualification = '0'  # 增加商品资质
+    product_info_dict['add_qualification'] = add_qualification
+    product_info_list.append(add_qualification)
+
+    o2o_bind_service = '0'  # 关联线下服务
+    product_info_dict['o2o_bind_service'] = o2o_bind_service
+    product_info_list.append(o2o_bind_service)
 
     print(u'商品信息字典形式: ')
     println(product_info_dict)
