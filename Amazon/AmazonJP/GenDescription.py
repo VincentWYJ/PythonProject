@@ -44,8 +44,8 @@ def genDescription(feature_list, image_list, description_image_list, comment_ima
         description += addEnter(ul_begin)
         for feature in feature_list:
             description += li_begin
-            description += addEnter(feature)
-            description += li_end
+            description += feature
+            description += addEnter(li_end)
         description += addEnter(ul_end)
 
     # 商品图片
