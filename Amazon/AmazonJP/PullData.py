@@ -158,32 +158,33 @@ def pullData(html_url):
     if len(detail_label_list) == 0 or len(detail_value_list) == 0:
         println('无')
 
+
         # 价格计算
-        i = 0
-        weight_temp = str('1000000克')
-        for items_Lable in detail_label_list:
-            if (re.search(r".*重量.*", detail_label_list[i]) != None):
-                weight_temp = detail_value_list[i]
-                break
-            i = i + 1
+    i = 0
+    weight_temp = str('1000000克')
+    for items_Lable in detail_label_list:
+        if (re.search(r".*重量.*", detail_label_list[i]) != None):
+            weight_temp = detail_value_list[i]
+            break
+        i = i + 1
 
-        if (re.search(r".*公斤.*", weight_temp) != None):
-            weight = 1000 * (int(weight_temp.replace(u'公斤', '').strip()))
-        elif (re.search(r".*克.*", weight_temp) != None):
-            weight = int(weight_temp.replace(u'克', '').strip())
-        else:
-            weight = 1000000
+    if (re.search(r".*公斤.*", weight_temp) != None):
+        weight = 1000 * (int(weight_temp.replace(u'公斤', '').strip()))
+    elif (re.search(r".*克.*", weight_temp) != None):
+        weight = int(weight_temp.replace(u'克', '').strip())
+    else:
+        weight = 1000000
 
-        if (weight + packet_weight) < 500:
-            ems = 100
-        else:
-            ems = 100 + ((weight + packet_weight - 500) / 100) * 10
+    if (weight + packet_weight) < 500:
+        ems = 100
+    else:
+        ems = 100 + ((weight + packet_weight - 500) / 100) * 10
 
-        price = round(((src_price + ship_price) / exchange_rate + (ems)) * (1 + profit_rate))
+    price = round(((src_price + ship_price) / exchange_rate + (ems)) * (1 + profit_rate))
 
-        product_info_dict['price'] = price
-        product_info_list.append(price)
-        println(u'宝贝价格: %d' % price)
+    product_info_dict['price'] = price
+    product_info_list.append(price)
+    println(u'宝贝价格: %d' % price)
 
     # 3.9 加价幅度
     auction_increment = 0
@@ -196,14 +197,12 @@ def pullData(html_url):
     num_node = bs_obj.find('', {'id': 'availability'})
     if num_node and len(num_node) > 0:
         num_text = num_node.get_text().replace('\n', '').strip()
-        if u'在庫あり' in num_text:
+        if (re.search(r".*在庫あり.*",num_text) != None):
             num = 50
-        elif u'残り' in num_text:
+        elif (re.search(r".*残り.*",num_text) != None):
             num = 5
-        elif u'月以内' in num_text:
+        else:
             num = 0
-        elif u'日以内' in num_text:
-            num = 1
     product_info_dict['num'] = num
     product_info_list.append(num)
     println(u'宝贝数量: %d' % num)
@@ -266,7 +265,7 @@ def pullData(html_url):
 
     # 3.20 开始时间
     now = datetime.datetime.today()
-    list_time = now.strftime('%Y/%m/%d %H:%M')
+    list_time = ''
     product_info_dict['list_time'] = list_time
     product_info_list.append(list_time)
     println(u'开始时间: %s' % list_time)
@@ -285,7 +284,7 @@ def pullData(html_url):
     feature_list = []
     feature_node = bs_obj.find('', {'id': 'feature-bullets'})
     if feature_node and len(feature_node) > 0:
-        for feature_text in feature_node.find_all('span'):
+        for feature_text in feature_node.find_all('span', {'class': 'a-list-item'}):
             if feature_text != '\n':
                 feature = translate(feature_text.get_text().strip().replace('\n', '').replace('\'', '')
                                     .replace('[', '').replace(']', '').replace('【', '').replace('】', ''))
@@ -301,7 +300,7 @@ def pullData(html_url):
     if image_node and len(image_node) > 0:
         for image_text in image_node.find_all('img'):
             if image_text != '\n':
-                image = image_text.get('src').replace('SS40', 'SL780')
+                image = image_text.get('src').replace('SS40', 'SL1200')
                 image_list.append(image)
                 println(image)
     if len(image_list) == 0:
@@ -317,7 +316,7 @@ def pullData(html_url):
     if description_node and len(description_node) > 0:
         for image_text in description_node.find_all('img'):
             if image_text != '\n':
-                image = replace_reg.sub('_UX780', image_text.get('src'))
+                image = replace_reg.sub('_UX1200', image_text.get('src'))
                 description_image_list.append(image)
                 println(image)
     if len(description_image_list) == 0:
@@ -351,7 +350,7 @@ def pullData(html_url):
     if comment_node and len(comment_node) > 0:
         for image_text in comment_node.find_all('img'):
             if image_text != '\n':
-                image = replace_reg.sub('_SL780', image_text.get('src'))
+                image = replace_reg.sub('_SL1200', image_text.get('src'))
                 comment_image_list.append(image)
                 println(image)
     if len(comment_image_list) == 0:
@@ -440,7 +439,7 @@ def pullData(html_url):
     product_info_list.append(video)
 
     # 3.31 销售属性组合
-    skuProps = ''
+    skuProps = '197:50::1627207:-1001;137:50::1627207:-1002;'
     product_info_dict['skuProps'] = skuProps
     product_info_list.append(skuProps)
 
@@ -495,7 +494,7 @@ def pullData(html_url):
     product_info_list.append(syncStatus)
 
     # 3.42 闪电发货
-    is_lighting_consigment = '80'
+    is_lighting_consigment = '252'
     product_info_dict['is_lighting_consigment'] = is_lighting_consigment
     product_info_list.append(is_lighting_consigment)
 
@@ -510,7 +509,7 @@ def pullData(html_url):
     product_info_list.append(foodparame)
 
     # 3.45 尺码库
-    features = 'mysize_tp:0'  #
+    features = 'mysize_tp:0;sizeGroupId:;sizeGroupType:;tags:4674,32706,25282'  #
     product_info_dict['features'] = features
     product_info_list.append(features)
 
@@ -520,7 +519,7 @@ def pullData(html_url):
     product_info_list.append(buyareatype)
 
     # 3.47 库存类型
-    global_stock_type = ''
+    global_stock_type = '2'
     product_info_dict['global_stock_type'] = global_stock_type
     product_info_list.append(global_stock_type)
 
@@ -535,12 +534,12 @@ def pullData(html_url):
     product_info_list.append(sub_stock_type)
 
     # 3.50 物流体积
-    item_size = 'bulk:0.000000'
+    item_size = '0.000001'
     product_info_dict['item_size'] = item_size
     product_info_list.append(item_size)
 
     # 3.51 物流重量
-    item_weight = weight + packet_weight
+    item_weight = round(((weight + packet_weight)/1000),1)
     product_info_dict['item_weight'] = item_weight
     product_info_list.append(item_weight)
 
@@ -574,10 +573,12 @@ def pullData(html_url):
     product_info_dict['newprepay'] = newprepay
     product_info_list.append(newprepay)
 
-    # 3.58 宝贝卖点
-    subtitle = ''
+    for text in feature_list:
+        subtitle_temp =+ text
+    subtitle = subtitle_temp[0:139]
     product_info_dict['subtitle'] = subtitle
     product_info_list.append(subtitle)
+    println(u'宝贝卖点: %s' % subtitle)
 
     # 3.59 属性值备注
     cpv_memo = ''
