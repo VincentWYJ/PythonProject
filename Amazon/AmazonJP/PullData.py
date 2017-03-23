@@ -158,21 +158,32 @@ def pullData(html_url):
     if len(detail_label_list) == 0 or len(detail_value_list) == 0:
         println('无')
 
-    # 价格计算
-    weight_temp = detail_value_list[detail_label_list.index(u'重量')]
-    if u'公斤' in weight_temp[0]:
-        weight = 1000*(int(weight_temp[0].replace(u'公斤', '').strip()))
-    else:
-        weight = int(weight_temp[0].replace(u'克', '').strip())
+        # 价格计算
+        i = 0
+        weight_temp = str('1000000克')
+        for items_Lable in detail_label_list:
+            if (re.search(r".*重量.*", detail_label_list[i]) != None):
+                weight_temp = detail_value_list[i]
+                break
+            i = i + 1
 
-    if (weight + packet_weight) < 500:
-        ems = 100
-    else:
-        ems = 100 + ((weight + packet_weight - 500) / 100) * 10
-    price = round(((src_price + ship_price) / exchange_rate + (ems)) * (1 + profit_rate))
-    product_info_dict['price'] = price
-    product_info_list.append(price)
-    println(u'宝贝价格: %d' % price)
+        if (re.search(r".*公斤.*", weight_temp) != None):
+            weight = 1000 * (int(weight_temp.replace(u'公斤', '').strip()))
+        elif (re.search(r".*克.*", weight_temp) != None):
+            weight = int(weight_temp.replace(u'克', '').strip())
+        else:
+            weight = 1000000
+
+        if (weight + packet_weight) < 500:
+            ems = 100
+        else:
+            ems = 100 + ((weight + packet_weight - 500) / 100) * 10
+
+        price = round(((src_price + ship_price) / exchange_rate + (ems)) * (1 + profit_rate))
+
+        product_info_dict['price'] = price
+        product_info_list.append(price)
+        println(u'宝贝价格: %d' % price)
 
     # 3.9 加价幅度
     auction_increment = 0
