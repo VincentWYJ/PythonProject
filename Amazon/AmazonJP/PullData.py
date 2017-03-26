@@ -311,14 +311,21 @@ def pullData(html_url):
     # 商品图片描述
     print(u'description_list--商品图片描述: ')
     description_image_list = []
-    description_node = bs_obj.find('', {'id': 'productDescription'})
+    description_image_text_list = []
+    description_node = bs_obj.find(('', {'id': 'productDescription'}) or ('', {'id': 'aplus_feature_div'}))
     replace_reg = re.compile(r'_UX...')
     if description_node and len(description_node) > 0:
-        for image_text in description_node.find_all('img'):
-            if image_text != '\n':
+        for image_text in description_node.find_all('img' or 'div', class_=re.compile(r'.*text.*')):
+            if re.search(r'img', image_text):
                 image = replace_reg.sub('_UX1200', image_text.get('src'))
                 description_image_list.append(image)
+                description_image_text_list.append(image)
                 println(image)
+            else:
+                text_lable = image_text.get_text().strip().replace('\n', '').replace('\'', '').replace('[', '').replace(
+                    ']', '').replace('【', '').replace('】', '')
+                description_image_text_list.append(text_lable)
+                println(text_lable)
     if len(description_image_list) == 0:
         println(u'无')
     else:
@@ -573,8 +580,10 @@ def pullData(html_url):
     product_info_dict['newprepay'] = newprepay
     product_info_list.append(newprepay)
 
+    #3.58 宝贝卖点
+    subtitle_temp=str()
     for text in feature_list:
-        subtitle_temp =+ text
+        subtitle_temp += text
     subtitle = subtitle_temp[0:139]
     product_info_dict['subtitle'] = subtitle
     product_info_list.append(subtitle)
