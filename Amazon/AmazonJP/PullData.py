@@ -169,7 +169,7 @@ def pullData(html_url):
         i = i + 1
 
     if (re.search(r".*公斤.*", weight_temp) != None):
-        weight = 1000 * (int(weight_temp.replace(u'公斤', '').strip()))
+        weight = int(1000*float((weight_temp.replace(u'公斤', '').strip())))
     elif (re.search(r".*克.*", weight_temp) != None):
         weight = int(weight_temp.replace(u'克', '').strip())
     else:
@@ -312,24 +312,16 @@ def pullData(html_url):
     print(u'description_list--商品图片描述: ')
     description_image_list = []
     description_image_text_list = []
-    description_node = bs_obj.find(('', {'id': 'productDescription'}) or ('', {'id': 'aplus_feature_div'}))
-    replace_reg = re.compile(r'_UX...')
+    description_node = bs_obj.find('div',id=re.compile(".*aplus_feature_div.*"))
+
     if description_node and len(description_node) > 0:
-        for image_text in description_node.find_all('img' or 'div', class_=re.compile(r'.*text.*')):
-            if re.search(r'img', image_text):
-                image = replace_reg.sub('_UX1200', image_text.get('src'))
-                description_image_list.append(image)
-                description_image_text_list.append(image)
-                println(image)
-            else:
-                text_lable = image_text.get_text().strip().replace('\n', '').replace('\'', '').replace('[', '').replace(
-                    ']', '').replace('【', '').replace('】', '')
-                description_image_text_list.append(text_lable)
-                println(text_lable)
-    if len(description_image_list) == 0:
-        println(u'无')
-    else:
-        product_image_list += description_image_list
+        reg1 = re.compile("<img")
+        reg2 = re.compile("<[^>]*>")
+        reg3 = re.compile("\n*")
+        content_temp = reg1.sub('', description_node.prettify())
+        content = reg2.sub('', content_temp).replace(' ','')
+        content1 = reg3.split(content)
+        println(content1)
 
     # 商品问答环节
     print(u'question_dict--商品问答环节: ')
