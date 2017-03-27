@@ -319,7 +319,7 @@ def pullData(html_url):
         reg2 = re.compile("<[^>]*>")
         reg3 = re.compile("\n*")
         content_temp = reg1.sub('', description_node.prettify())
-        content = reg2.sub('', content_temp).replace(' ','')
+        content = reg2.sub('', content_temp).replace(' ','').strip('\n')
         content1 = reg3.split(content)
         println(content1)
 
