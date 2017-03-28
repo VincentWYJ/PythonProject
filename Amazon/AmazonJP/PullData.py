@@ -57,6 +57,7 @@ def pullData(html_url):
     # 提取网页内容
     if 'html' in html_url:
         html_url = 'Htmls/' + html_url
+        #html_url=r'D:\projects\amazon\3.htm'
         html_file = open(html_url, encoding='UTF-8')
     else:
         try:
@@ -318,10 +319,19 @@ def pullData(html_url):
         reg1 = re.compile("<img")
         reg2 = re.compile("<[^>]*>")
         reg3 = re.compile("\n*")
+        reg4 = re.compile ("src=[^>]*>")
         content_temp = reg1.sub('', description_node.prettify())
         content = reg2.sub('', content_temp).replace(' ','').strip('\n')
         content1 = reg3.split(content)
         println(content1)
+    for content_item in content1:
+        if re.search('src=http',content_item) == None: # 如果没有网址,文字就翻译
+            content_temp = translate(content_item)
+        else:  # 图片就截取图片网址
+            content_temp = reg4.match('',content_item).strip("src=").strip(">")
+
+        description_image_text_list.append(content_temp) #附加到list
+
 
     # 商品问答环节
     print(u'question_dict--商品问答环节: ')
