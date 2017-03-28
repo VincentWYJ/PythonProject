@@ -320,15 +320,17 @@ def pullData(html_url):
         reg2 = re.compile("<[^>]*>")
         reg3 = re.compile("\n*")
         reg4 = re.compile ("src=[^>]*>")
+        reg5 = re.compile("__.*_")
         content_temp = reg1.sub('', description_node.prettify())
         content = reg2.sub('', content_temp).replace(' ','').strip('\n')
         content1 = reg3.split(content)
         println(content1)
     for content_item in content1:
-        if re.search('src=http',content_item) == None: # 如果没有网址,文字就翻译
+        if re.search('src=',content_item) == None: # 如果没有网址,文字就翻译
             content_temp = translate(content_item)
         else:  # 图片就截取图片网址
-            content_temp = reg4.match('',content_item).strip("src=").strip(">")
+            content_temp_x = reg4.search(content_item).group().strip("src=").strip("/>").strip('"')
+            content_temp = reg5.sub('__SL600_',content_temp_x)
 
         description_image_text_list.append(content_temp) #附加到list
 
