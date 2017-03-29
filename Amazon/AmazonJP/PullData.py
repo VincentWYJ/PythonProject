@@ -49,7 +49,7 @@ def pullData(html_url):
     product_info_list = []
 
     # 商品总信息字典
-    product_info_dict = {}
+    # product_info_dict = {}
 
     # 所有图片链接列表
     product_image_list = []
@@ -79,43 +79,43 @@ def pullData(html_url):
     if title_node and len(title_node) > 0:
         title = translate(title_node.get_text().strip().replace('\'', ''))
     title = title_append + title
-    product_info_dict['title'] = title
+    # product_info_dict['title'] = title
     product_info_list.append(title)
     println(u'宝贝名称: %s' % title)
 
     # 3.2 宝贝类目
     cid = 50018961
-    product_info_dict['cid'] = cid
+    # product_info_dict['cid'] = cid
     product_info_list.append(cid)
     println(u'宝贝类目: %d' % cid)
 
     # 3.3 店铺类目
     seller_cids = 50018961
-    product_info_dict['seller_cids'] = seller_cids
+    # product_info_dict['seller_cids'] = seller_cids
     product_info_list.append(seller_cids)
     println(u'店铺类目: %d' % seller_cids)
 
     # 3.4 淘宝新旧程度
     stuff_status = 1
-    product_info_dict['stuff_status'] = stuff_status
+    # product_info_dict['stuff_status'] = stuff_status
     product_info_list.append(stuff_status)
     println(u'新旧程度: %d' % stuff_status)
 
     # 3.5 省
     location_state = u'海外'
-    product_info_dict['location_state'] = location_state
+    # product_info_dict['location_state'] = location_state
     product_info_list.append(location_state)
     println(u'省: %s' % location_state)
 
     # 3.6 城市
     location_city = u'日本'
-    product_info_dict['location_city'] = location_city
+    # product_info_dict['location_city'] = location_city
     product_info_list.append(location_city)
     println(u'城市: %s' % location_city)
 
     # 3.7 出售方式
     item_type = 1
-    product_info_dict['item_type'] = item_type
+    # product_info_dict['item_type'] = item_type
     product_info_list.append(item_type)
     println(u'出售方式: %d' % item_type)
 
@@ -139,7 +139,7 @@ def pullData(html_url):
                 ship_price = 0
     println(ship_price)
 
-    # 产品详细
+    # 商品详细
     print(u'detail_dict--商品详细: ')
     detail_label_list = []
     detail_value_list = []
@@ -160,7 +160,7 @@ def pullData(html_url):
         println('无')
 
 
-        # 价格计算
+    # 价格计算
     i = 0
     weight_temp = str('1000000克')
     for items_Lable in detail_label_list:
@@ -168,28 +168,24 @@ def pullData(html_url):
             weight_temp = detail_value_list[i]
             break
         i = i + 1
-
     if (re.search(r".*公斤.*", weight_temp) != None):
         weight = int(1000*float((weight_temp.replace(u'公斤', '').strip())))
     elif (re.search(r".*克.*", weight_temp) != None):
         weight = int(weight_temp.replace(u'克', '').strip())
     else:
         weight = 1000000
-
     if (weight + packet_weight) < 500:
         ems = 100
     else:
         ems = 100 + ((weight + packet_weight - 500) / 100) * 10
-
     price = round(((src_price + ship_price) / exchange_rate + (ems)) * (1 + profit_rate))
-
-    product_info_dict['price'] = price
+    # product_info_dict['price'] = price
     product_info_list.append(price)
     println(u'宝贝价格: %d' % price)
 
     # 3.9 加价幅度
     auction_increment = 0
-    product_info_dict['auction_increment'] = auction_increment
+    # product_info_dict['auction_increment'] = auction_increment
     product_info_list.append(auction_increment)
     println(u'加价幅度: %d' % auction_increment)
 
@@ -204,7 +200,7 @@ def pullData(html_url):
             num = 5
         else:
             num = 0
-    product_info_dict['num'] = num
+    # product_info_dict['num'] = num
     product_info_list.append(num)
     println(u'宝贝数量: %d' % num)
 
@@ -212,66 +208,66 @@ def pullData(html_url):
     #now = datetime.datetime.today() + datetime.timedelta(days=6)
     #valid_thru = now.strftime('%Y/%m/%d %H:%M')
     valid_thru = 7 #有效期是数字不是日期
-    product_info_dict['valid_thru'] = valid_thru
+    # product_info_dict['valid_thru'] = valid_thru
     product_info_list.append(valid_thru)
     println(u'有效期: %s' % valid_thru)
 
     # 3.12 运费承担
     freight_payer = 2
-    product_info_dict['freight_payer'] = freight_payer
+    # product_info_dict['freight_payer'] = freight_payer
     product_info_list.append(freight_payer)
     println(u'运费承担: %d' % freight_payer)
 
     # 3.13 平邮
     post_fee = 0
-    product_info_dict['post_fee'] = post_fee
+    # product_info_dict['post_fee'] = post_fee
     product_info_list.append(post_fee)
     println(u'平邮: %d' % post_fee)
 
     # 3.14 EMS
     ems_fee = 2
-    product_info_dict['ems_fee'] = ems_fee
+    # product_info_dict['ems_fee'] = ems_fee
     product_info_list.append(ems_fee)
     println(u'EMS: %d' % ems_fee)
 
     # 3.15 快递
     express_fee = 0
-    product_info_dict['express_fee'] = express_fee
+    # product_info_dict['express_fee'] = express_fee
     product_info_list.append(express_fee)
     println(u'快递: %d' % express_fee)
 
     # 3.16 发票
     has_invoice = 1
-    product_info_dict['has_invoice'] = has_invoice
+    # product_info_dict['has_invoice'] = has_invoice
     product_info_list.append(has_invoice)
     println(u'发票: %d' % has_invoice)
 
     # 3.17 保修
     has_warranty = 1
-    product_info_dict['has_warranty'] = has_warranty
+    # product_info_dict['has_warranty'] = has_warranty
     product_info_list.append(has_warranty)
     println(u'保修: %d' % has_warranty)
 
     # 3.18 放入仓库
     approve_status = 1
-    product_info_dict['approve_status'] = approve_status
+    # product_info_dict['approve_status'] = approve_status
     product_info_list.append(approve_status)
     println(u'放入仓库: %d' % approve_status)
 
     # 3.19 橱窗推荐
     has_showcase = 0
-    product_info_dict['has_showcase'] = has_showcase
+    # product_info_dict['has_showcase'] = has_showcase
     product_info_list.append(has_showcase)
     println(u'橱窗推荐: %d' % has_showcase)
 
     # 3.20 开始时间
     now = datetime.datetime.today()
     list_time = ''
-    product_info_dict['list_time'] = list_time
+    # product_info_dict['list_time'] = list_time
     product_info_list.append(list_time)
     println(u'开始时间: %s' % list_time)
 
-    # 3.21 description
+    # 3.21 商品描述
     # 品牌
     print(u'brand--品牌: ')
     brand = ''
@@ -301,7 +297,7 @@ def pullData(html_url):
     if image_node and len(image_node) > 0:
         for image_text in image_node.find_all('img'):
             if image_text != '\n':
-                image = image_text.get('src').replace('SS40', 'SL1200')
+                image = image_text.get('src').replace('SS40', 'SL600')
                 image_list.append(image)
                 println(image)
     if len(image_list) == 0:
@@ -309,95 +305,80 @@ def pullData(html_url):
     else:
         product_image_list += image_list
 
-    # re list here
-
-    delete_img_head_reg = re.compile("<img")
-    delete_html_head_reg = re.compile("<[^>]*>")
-    delete_n_reg = re.compile("\n*")
-    search_http_reg = re.compile("src=[^>]*>")
-    change_imagesize_reg = re.compile("__.*_")
-
-    # product-description_feature描述描述
-    print(u'description_list--product-description_feature描述: ')
-    product_feature_div_description_list = []
-    product_feature_div_node = bs_obj.find('div',id=re.compile(".*descriptionAndDetails.*"))
-
-    if product_feature_div_node and len(product_feature_div_node) > 0:
-        image_head_deleted_content_product = delete_img_head_reg.sub('', product_feature_div_node.prettify())
-        html_head_deleted_content_product = delete_html_head_reg.sub('', image_head_deleted_content_product).replace(' ','').strip('\n')
-        content_list_product = delete_n_reg.split(html_head_deleted_content_product)
-    for content_item_product in content_list_product:
-        if re.search('src=',content_item_product) == None: # 如果没有网址,文字就翻译
-            content_temp_product = translate(content_item_product)
-        else:  # 图片就截取图片网址
-            pure_link_name_product = search_http_reg.search(content_temp_product).group().strip("src=").strip("/>").strip('"')
-            content_temp_product = change_imagesize_reg.sub('__SL600_',pure_link_name_product)
-            product_feature_div_description_list.append(content_temp_product) #附加到list
-    if len(product_feature_div_description_list) == 0:
-        println(u'无')
-    else:
-        println(product_feature_div_description_list)
-
-
-    # aplus_feature_div描述描述
-    print(u'description_list--aplus_feature_div描述: ')
-    aplus_feature_div_description_list = []
-    aplus_feature_div_node = bs_obj.find('div',id=re.compile(".*aplus_feature_div.*"))
-
-    if aplus_feature_div_node and len(aplus_feature_div_node) > 0:
-        image_head_deleted_content = delete_img_head_reg.sub('', aplus_feature_div_node.prettify())
-        html_head_deleted_content = delete_html_head_reg.sub('', image_head_deleted_content).replace(' ','').strip('\n')
-        content_list = delete_n_reg.split(html_head_deleted_content)
-    for content_item in content_list:
-        if re.search('src=',content_item) == None: # 如果没有网址,文字就翻译
+    # 商品图片描述
+    print(u'description_list--商品图片描述: ')
+    description_image_list = []
+    description_node = bs_obj.find('div',id=re.compile(".*aplus_feature_div.*"))
+    if description_node and len(description_node) > 0:
+        reg1 = re.compile("<img")
+        reg2 = re.compile("<[^>]*>")
+        reg3 = re.compile("\s*")
+        reg4 = re.compile("src=[^>]*>")
+        reg5 = re.compile("__.*_")
+        content_temp = reg1.sub('', description_node.prettify())
+        content = reg2.sub('', content_temp).replace(' ','').strip('\n')
+        content1 = reg3.split(content)
+    for content_item in content1:
+        if re.search('src=',content_item) == None:
             content_temp = translate(content_item)
-        else:  # 图片就截取图片网址
-            pure_link_name = search_http_reg.search(content_item).group().strip("src=").strip("/>").strip('"')
-            content_temp = change_imagesize_reg.sub('__SL600_',pure_link_name)
-        aplus_feature_div_description_list.append(content_temp) #附加到list
-    if len(aplus_feature_div_description_list) == 0:
-        println(u'无')
-    else:
-        println(aplus_feature_div_description_list)
+        else:
+            content_temp_x = reg4.search(content_item).group().strip("src=").strip("/>").strip('"')
+            content_temp = reg5.sub('__SL600_',content_temp_x)
+        description_image_list.append(content_temp)
+    if len(description_image_list) > 0:
+        println(description_image_list)
 
     # 商品问答环节
     print(u'question_dict--商品问答环节: ')
     question_list = []
-    question_node = bs_obj.find('', id=re.compile(".*ask-btf_feature_div.*"))
+    answer_list = []
+    question_node = bs_obj.find('', {'id': 'cf-ask-cel'})
     if question_node and len(question_node) > 0:
-        html_head_deleted_content_question = delete_html_head_reg.sub('', question_node.prettify()).replace(' ','').strip('\n')
-        question_list= delete_n_reg.split(html_head_deleted_content_question)
-    if len(question_list) == 0:
+        for question in question_node.find_all('a', href=re.compile(r'.*asin.*')):
+            if question != '\n':
+                question_list.append(translate(question.get_text().strip()))
+        for answer in question_node.find_all('span', href=re.compile(r'.*asin.*')):
+            if answer != '\n':
+                answer_list.append(translate(answer.get_text().strip()))
+        if len(question_list) > 0 and len(answer_list) > 0:
+            for index in range(len(question_list)):
+                println('%s: %s' % (question_list[index], answer_list[index]))
+    if len(question_list) == 0 or len(answer_list) == 0:
         println(u'无')
-    else:
-        println(question_list)
 
-    # 客户评论
+    # 客户图片评论
     print(u'comment_image_list--客户图片评论: ')
-    comment_image_text_list = []
-    comment_node = bs_obj.find('', id=re.compile(".*customer-reviews_feature_div.*"))
+    comment_image_list = []
+    comment_node = bs_obj.find('', {'id': 'revMH'})
+    replace_reg = re.compile(r'_SL...')
     if comment_node and len(comment_node) > 0:
-        image_head_deleted_content_comment = delete_img_head_reg.sub('', comment_node.prettify())
-        html_head_deleted_content_comment = delete_html_head_reg.sub('', image_head_deleted_content_comment).replace(' ', '').strip('\n')
-        content_list_comment = delete_n_reg.split(html_head_deleted_content_comment)
-    for content_item_comment in content_list_comment:
-        if re.search('src=', content_item_comment) == None:  # 如果没有网址,文字就翻译
-            content_temp_comment = translate(content_item_comment)
-        else:  # 图片就截取图片网址
-            pure_link_name_comment = search_http_reg.search(content_item_comment).group().strip("src=").strip("/>").strip('"')
-            content_temp_comment = change_imagesize_reg.sub('__SL600_', pure_link_name_comment)
-            comment_image_text_list.append(content_temp_comment)  # 附加到list
-    if len(comment_image_text_list) == 0:
+        for image_text in comment_node.find_all('img'):
+            if image_text != '\n':
+                image = replace_reg.sub('_SL600', image_text.get('src'))
+                comment_image_list.append(image)
+                println(image)
+    if len(comment_image_list) == 0:
         println(u'无')
     else:
-        println(comment_image_text_list)
+        product_image_list += comment_image_list
 
     # 客户文字评论
     print(u'comment_text_list--客户文字评论: ')
     comment_text_list = []
+    comment_node = bs_obj.find('',{'id':'revMH'})
+    for aa in bs_obj(['a']):
+        aa.extract()
+    if comment_node and len(comment_node) > 0:
+        for comment_text in comment_node.find_all('div',{'class':'a-section celwidget'}):
+            if comment_text != '\n':
+                comment = comment_text.get_text().replace('\n', '').strip()
+                comment_text_list.append(comment)
+                println(comment)
+    if len(comment_text_list) == 0:
+        println('无')
 
     description = genDescription(feature_list, image_list, description_image_list, comment_image_list)
-    product_info_dict['description'] = description
+    # product_info_dict['description'] = description
     product_info_list.append(description)
 
     # 新图片下载与路径写入csv
@@ -410,37 +391,37 @@ def pullData(html_url):
 
     # 3.22 宝贝属性
     cateProps = ''
-    product_info_dict['cateProps'] = cateProps
+    # product_info_dict['cateProps'] = cateProps
     product_info_list.append(cateProps)
 
     # 3.23 邮费模版ID
     postage_id = 5352276030
-    product_info_dict['postage_id'] = postage_id
+    # product_info_dict['postage_id'] = postage_id
     product_info_list.append(postage_id)
 
     # 3.24 会员打折
     has_discount = 0
-    product_info_dict['has_discount'] = has_discount
+    # product_info_dict['has_discount'] = has_discount
     product_info_list.append(has_discount)
 
     # 3.25 修改时间
     modified = list_time
-    product_info_dict['modified'] = modified
+    # product_info_dict['modified'] = modified
     product_info_list.append(modified)
 
     # 3.26 上传状态
     upload_fail_msg = ''
-    product_info_dict['upload_fail_msg'] = upload_fail_msg
+    # product_info_dict['upload_fail_msg'] = upload_fail_msg
     product_info_list.append(upload_fail_msg)
 
     # 3.27 图片状态
     picture_status = '1;1;1;1;1;'
-    product_info_dict['picture_status'] = picture_status
+    # product_info_dict['picture_status'] = picture_status
     product_info_list.append(picture_status)
 
     # 3.28 返点比例
     auction_point = 0
-    product_info_dict['auction_point'] = auction_point
+    # product_info_dict['auction_point'] = auction_point
     product_info_list.append(auction_point)
 
     # 3.29 新图片
@@ -453,147 +434,147 @@ def pullData(html_url):
             i1 = str(i)
         i2 = str(i)
         picture += new_picture_temp.replace('i1', i1).replace('i2', i2)
-    product_info_dict['picture'] = picture
+    # product_info_dict['picture'] = picture
     product_info_list.append(picture)
 
     # 3.30 视频
     video = ''
-    product_info_dict['video'] = video
+    # product_info_dict['video'] = video
     product_info_list.append(video)
 
     # 3.31 销售属性组合
     skuProps = '197:50::1627207:-1001;137:50::1627207:-1002;'
-    product_info_dict['skuProps'] = skuProps
+    # product_info_dict['skuProps'] = skuProps
     product_info_list.append(skuProps)
 
     # 3.32 用户输入ID串
     inputPids = ''
-    product_info_dict['inputPids'] = inputPids
+    # product_info_dict['inputPids'] = inputPids
     product_info_list.append(inputPids)
 
     # 3.33 用户输入名-值对
     inputValues = ''
-    product_info_dict['inputValues'] = inputValues
+    # product_info_dict['inputValues'] = inputValues
     product_info_list.append(inputValues)
 
     # 3.34 商家编码
     outer_id = detail_value_list[detail_label_list.index(u'ASIN')]
-    product_info_dict['outer_id'] = outer_id
+    # product_info_dict['outer_id'] = outer_id
     product_info_list.append(outer_id)
 
     # 3.35 销售属性别名
     propAlias = ''
-    product_info_dict['propAlias'] = propAlias
+    # product_info_dict['propAlias'] = propAlias
     product_info_list.append(propAlias)
 
     # 3.36 代充类型
     auto_fill = ''
-    product_info_dict['auto_fill'] = auto_fill
+    # product_info_dict['auto_fill'] = auto_fill
     product_info_list.append(auto_fill)
 
     # 3.37 数字ID
     num_id = '543000000000'
-    product_info_dict['num_id'] = num_id
+    # product_info_dict['num_id'] = num_id
     product_info_list.append(num_id)
 
     # 3.38 本地ID
     local_cid = '-1'
-    product_info_dict['local_cid'] = local_cid
+    # product_info_dict['local_cid'] = local_cid
     product_info_list.append(local_cid)
 
     # 3.39 宝贝分类
     navigation_type = 2
-    product_info_dict['navigation_type'] = navigation_type
+    # product_info_dict['navigation_type'] = navigation_type
     product_info_list.append(navigation_type)
 
     # 3.40 用户名称
     user_name = 'scjmanbuman'
-    product_info_dict['user_name'] = user_name
+    # product_info_dict['user_name'] = user_name
     product_info_list.append(user_name)
 
     # 3.41 宝贝状态
     syncStatus = '1'
-    product_info_dict['syncStatus'] = syncStatus
+    # product_info_dict['syncStatus'] = syncStatus
     product_info_list.append(syncStatus)
 
     # 3.42 闪电发货
     is_lighting_consigment = '252'
-    product_info_dict['is_lighting_consigment'] = is_lighting_consigment
+    # product_info_dict['is_lighting_consigment'] = is_lighting_consigment
     product_info_list.append(is_lighting_consigment)
 
     # 3.43 新品
     is_xinpin = '248'
-    product_info_dict['is_xinpin'] = is_xinpin
+    # product_info_dict['is_xinpin'] = is_xinpin
     product_info_list.append(is_xinpin)
 
     # 3.44 食品专项
     foodparame = ''
-    product_info_dict['foodparame'] = foodparame
+    # product_info_dict['foodparame'] = foodparame
     product_info_list.append(foodparame)
 
     # 3.45 尺码库
     features = 'mysize_tp:0;sizeGroupId:;sizeGroupType:;tags:4674,32706,25282'  #
-    product_info_dict['features'] = features
+    # product_info_dict['features'] = features
     product_info_list.append(features)
 
     # 3.46 采购地
     buyareatype = '1'
-    product_info_dict['buyareatype'] = buyareatype
+    # product_info_dict['buyareatype'] = buyareatype
     product_info_list.append(buyareatype)
 
     # 3.47 库存类型
     global_stock_type = '2'
-    product_info_dict['global_stock_type'] = global_stock_type
+    # product_info_dict['global_stock_type'] = global_stock_type
     product_info_list.append(global_stock_type)
 
     # 3.48 国家地区
     global_stock_country = '日本'
-    product_info_dict['global_stock_country'] = global_stock_country
+    # product_info_dict['global_stock_country'] = global_stock_country
     product_info_list.append(global_stock_country)
 
     # 3.49 库存计数
     sub_stock_type = '1'
-    product_info_dict['sub_stock_type'] = sub_stock_type
+    # product_info_dict['sub_stock_type'] = sub_stock_type
     product_info_list.append(sub_stock_type)
 
     # 3.50 物流体积
     item_size = '0.000001'
-    product_info_dict['item_size'] = item_size
+    # product_info_dict['item_size'] = item_size
     product_info_list.append(item_size)
 
     # 3.51 物流重量
     item_weight = round(((weight + packet_weight)/1000),1)
-    product_info_dict['item_weight'] = item_weight
+    # product_info_dict['item_weight'] = item_weight
     product_info_list.append(item_weight)
 
     # 3.52 退换货承诺
     sell_promise = '0'
-    product_info_dict['sell_promise'] = sell_promise
+    # product_info_dict['sell_promise'] = sell_promise
     product_info_list.append(sell_promise)
 
     # 3.53 定制工具
     custom_design_flag = ''
-    product_info_dict['custom_design_flag'] = custom_design_flag
+    # product_info_dict['custom_design_flag'] = custom_design_flag
     product_info_list.append(custom_design_flag)
 
     # 3.54 无线详情
     wireless_desc = genWirelessDesc(title, feature_list, image_list, description_image_list, comment_image_list)
-    product_info_dict['wireless_desc'] = wireless_desc
+    # product_info_dict['wireless_desc'] = wireless_desc
     product_info_list.append(wireless_desc)
 
     # 3.55 商品条形码
     barcode = ''
-    product_info_dict['barcode'] = barcode
+    # product_info_dict['barcode'] = barcode
     product_info_list.append(barcode)
 
     # 3.56 sku 条形码
     sku_barcode = ''
-    product_info_dict['sku_barcode'] = sku_barcode
+    # product_info_dict['sku_barcode'] = sku_barcode
     product_info_list.append(sku_barcode)
 
     # 3.57 7天退货
     newprepay = '0'
-    product_info_dict['newprepay'] = newprepay
+    # product_info_dict['newprepay'] = newprepay
     product_info_list.append(newprepay)
 
     #3.58 宝贝卖点
@@ -601,37 +582,37 @@ def pullData(html_url):
     for text in feature_list:
         subtitle_temp += text
     subtitle = subtitle_temp[0:139]
-    product_info_dict['subtitle'] = subtitle
+    # product_info_dict['subtitle'] = subtitle
     product_info_list.append(subtitle)
     println(u'宝贝卖点: %s' % subtitle)
 
     # 3.59 属性值备注
     cpv_memo = ''
-    product_info_dict['cpv_memo'] = cpv_memo
+    # product_info_dict['cpv_memo'] = cpv_memo
     product_info_list.append(cpv_memo)
 
     # 3.60 自定义属性值
     input_custom_cpv = ''
-    product_info_dict['input_custom_cpv'] = input_custom_cpv
+    # product_info_dict['input_custom_cpv'] = input_custom_cpv
     product_info_list.append(input_custom_cpv)
 
     # 3.61 商品资质
     qualification = ''
-    product_info_dict['qualification'] = qualification
+    # product_info_dict['qualification'] = qualification
     product_info_list.append(qualification)
 
     # 3.62 增加商品资质
     add_qualification = '0'
-    product_info_dict['add_qualification'] = add_qualification
+    # product_info_dict['add_qualification'] = add_qualification
     product_info_list.append(add_qualification)
 
     # 3.63 关联线下服务
     o2o_bind_service = '0'
-    product_info_dict['o2o_bind_service'] = o2o_bind_service
+    # product_info_dict['o2o_bind_service'] = o2o_bind_service
     product_info_list.append(o2o_bind_service)
 
-    print(u'商品信息字典形式: ')
-    println(product_info_dict)
+    # print(u'商品信息字典形式: ')
+    # println(product_info_dict)
     print(u'商品信息列表形式: ')
     println(product_info_list)
 

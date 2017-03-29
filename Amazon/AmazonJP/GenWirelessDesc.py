@@ -49,7 +49,10 @@ def genWirelessDesc(title, feature_list, image_list, description_image_list, com
     # 商家图片
     if description_image_list and len(description_image_list) > 0:
         for image in description_image_list:
-            description += addEnter(img.replace(img_reg, image))
+            if 'http' in image:
+                description += addEnter(img.replace(img_reg, image))
+            elif u'了解更多' not in image:
+                description += addEnter(txt.replace(txt_reg, image))
 
     # 评论图片
     if comment_image_list and len(comment_image_list) > 0:

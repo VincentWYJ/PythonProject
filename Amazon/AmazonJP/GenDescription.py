@@ -61,8 +61,9 @@ def genDescription(feature_list, image_list, description_image_list, comment_ima
         description += addEnter(br)
         description += addEnter('商家图片：')
         for image in description_image_list:
-            description += addEnter(br)
-            description += addEnter(img.replace(img_rep, image))
+            if 'http' in image:
+                description += addEnter(br)
+                description += addEnter(img.replace(img_rep, image))
 
     # 评论图片
     if comment_image_list and len(comment_image_list) > 0:

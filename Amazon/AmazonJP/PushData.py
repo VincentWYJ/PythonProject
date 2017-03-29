@@ -12,7 +12,7 @@ from Utils import *
 def pushData(product_info_list):
     println(u'\n\n打印表格数据------------------------------------------------')
 
-    item_file = open('Items.csv', 'a+', newline='')
+    item_file = open('Items.csv', 'a+', newline='', encoding='UTF-8')
     item_writer = csv.writer(item_file, dialect='excel')
     item_writer.writerow(product_info_list)
     item_file.close()
