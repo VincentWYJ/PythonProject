@@ -309,80 +309,92 @@ def pullData(html_url):
     else:
         product_image_list += image_list
 
-    # 商品图片描述
-    print(u'description_list--商品图片描述: ')
-    description_image_list = []
-    description_image_text_list = []
-    description_node = bs_obj.find('div',id=re.compile(".*aplus_feature_div.*"))
+    # re list here
 
-    if description_node and len(description_node) > 0:
-        reg1 = re.compile("<img")
-        reg2 = re.compile("<[^>]*>")
-        reg3 = re.compile("\n*")
-        reg4 = re.compile ("src=[^>]*>")
-        reg5 = re.compile("__.*_")
-        content_temp = reg1.sub('', description_node.prettify())
-        content = reg2.sub('', content_temp).replace(' ','').strip('\n')
-        content1 = reg3.split(content)
-        println(content1)
-    for content_item in content1:
+    delete_img_head_reg = re.compile("<img")
+    delete_html_head_reg = re.compile("<[^>]*>")
+    delete_n_reg = re.compile("\n*")
+    search_http_reg = re.compile("src=[^>]*>")
+    change_imagesize_reg = re.compile("__.*_")
+
+    # product-description_feature描述描述
+    print(u'description_list--product-description_feature描述: ')
+    product_feature_div_description_list = []
+    product_feature_div_node = bs_obj.find('div',id=re.compile(".*descriptionAndDetails.*"))
+
+    if product_feature_div_node and len(product_feature_div_node) > 0:
+        image_head_deleted_content_product = delete_img_head_reg.sub('', product_feature_div_node.prettify())
+        html_head_deleted_content_product = delete_html_head_reg.sub('', image_head_deleted_content_product).replace(' ','').strip('\n')
+        content_list_product = delete_n_reg.split(html_head_deleted_content_product)
+    for content_item_product in content_list_product:
+        if re.search('src=',content_item_product) == None: # 如果没有网址,文字就翻译
+            content_temp_product = translate(content_item_product)
+        else:  # 图片就截取图片网址
+            pure_link_name_product = search_http_reg.search(content_temp_product).group().strip("src=").strip("/>").strip('"')
+            content_temp_product = change_imagesize_reg.sub('__SL600_',pure_link_name_product)
+            product_feature_div_description_list.append(content_temp_product) #附加到list
+    if len(product_feature_div_description_list) == 0:
+        println(u'无')
+    else:
+        println(product_feature_div_description_list)
+
+
+    # aplus_feature_div描述描述
+    print(u'description_list--aplus_feature_div描述: ')
+    aplus_feature_div_description_list = []
+    aplus_feature_div_node = bs_obj.find('div',id=re.compile(".*aplus_feature_div.*"))
+
+    if aplus_feature_div_node and len(aplus_feature_div_node) > 0:
+        image_head_deleted_content = delete_img_head_reg.sub('', aplus_feature_div_node.prettify())
+        html_head_deleted_content = delete_html_head_reg.sub('', image_head_deleted_content).replace(' ','').strip('\n')
+        content_list = delete_n_reg.split(html_head_deleted_content)
+    for content_item in content_list:
         if re.search('src=',content_item) == None: # 如果没有网址,文字就翻译
             content_temp = translate(content_item)
         else:  # 图片就截取图片网址
-            content_temp_x = reg4.search(content_item).group().strip("src=").strip("/>").strip('"')
-            content_temp = reg5.sub('__SL600_',content_temp_x)
-
-        description_image_text_list.append(content_temp) #附加到list
-
+            pure_link_name = search_http_reg.search(content_item).group().strip("src=").strip("/>").strip('"')
+            content_temp = change_imagesize_reg.sub('__SL600_',pure_link_name)
+        aplus_feature_div_description_list.append(content_temp) #附加到list
+    if len(aplus_feature_div_description_list) == 0:
+        println(u'无')
+    else:
+        println(aplus_feature_div_description_list)
 
     # 商品问答环节
     print(u'question_dict--商品问答环节: ')
     question_list = []
-    answer_list = []
-    question_node = bs_obj.find('', {'id': 'cf-ask-cel'})
+    question_node = bs_obj.find('', id=re.compile(".*ask-btf_feature_div.*"))
     if question_node and len(question_node) > 0:
-        for question in question_node.find_all('a', href=re.compile(r'.*asin.*')):
-            if question != '\n':
-                question_list.append(translate(question.get_text().strip()))
-        for answer in question_node.find_all('span', href=re.compile(r'.*asin.*')):
-            if answer != '\n':
-                answer_list.append(translate(answer.get_text().strip()))
-        if len(question_list) > 0 and len(answer_list) > 0:
-            for index in range(len(question_list)):
-                println('%s: %s' % (question_list[index], answer_list[index]))
-    if len(question_list) == 0 or len(answer_list) == 0:
-        println(u'无')
-
-    # 客户图片评论
-    print(u'comment_image_list--客户图片评论: ')
-    comment_image_list = []
-    comment_node = bs_obj.find('', {'id': 'revMH'})
-    replace_reg = re.compile(r'_SL...')
-    if comment_node and len(comment_node) > 0:
-        for image_text in comment_node.find_all('img'):
-            if image_text != '\n':
-                image = replace_reg.sub('_SL1200', image_text.get('src'))
-                comment_image_list.append(image)
-                println(image)
-    if len(comment_image_list) == 0:
+        html_head_deleted_content_question = delete_html_head_reg.sub('', question_node.prettify()).replace(' ','').strip('\n')
+        question_list= delete_n_reg.split(html_head_deleted_content_question)
+    if len(question_list) == 0:
         println(u'无')
     else:
-        product_image_list += comment_image_list
+        println(question_list)
+
+    # 客户评论
+    print(u'comment_image_list--客户图片评论: ')
+    comment_image_text_list = []
+    comment_node = bs_obj.find('', id=re.compile(".*customer-reviews_feature_div.*"))
+    if comment_node and len(comment_node) > 0:
+        image_head_deleted_content_comment = delete_img_head_reg.sub('', comment_node.prettify())
+        html_head_deleted_content_comment = delete_html_head_reg.sub('', image_head_deleted_content_comment).replace(' ', '').strip('\n')
+        content_list_comment = delete_n_reg.split(html_head_deleted_content_comment)
+    for content_item_comment in content_list_comment:
+        if re.search('src=', content_item_comment) == None:  # 如果没有网址,文字就翻译
+            content_temp_comment = translate(content_item_comment)
+        else:  # 图片就截取图片网址
+            pure_link_name_comment = search_http_reg.search(content_item_comment).group().strip("src=").strip("/>").strip('"')
+            content_temp_comment = change_imagesize_reg.sub('__SL600_', pure_link_name_comment)
+            comment_image_text_list.append(content_temp_comment)  # 附加到list
+    if len(comment_image_text_list) == 0:
+        println(u'无')
+    else:
+        println(comment_image_text_list)
 
     # 客户文字评论
     print(u'comment_text_list--客户文字评论: ')
     comment_text_list = []
-    comment_node = bs_obj.find('',{'id':'revMH'})
-    for aa in bs_obj(['a']):
-        aa.extract()
-    if comment_node and len(comment_node) > 0:
-        for comment_text in comment_node.find_all('div',{'class':'a-section celwidget'}):
-            if comment_text != '\n':
-                comment = comment_text.get_text().replace('\n', '').strip()
-                comment_text_list.append(comment)
-                println(comment)
-    if len(comment_text_list) == 0:
-        println('无')
 
     description = genDescription(feature_list, image_list, description_image_list, comment_image_list)
     product_info_dict['description'] = description
