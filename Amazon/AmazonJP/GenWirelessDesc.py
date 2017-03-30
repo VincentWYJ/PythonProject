@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 
@@ -26,7 +27,8 @@ def addEnter(text):
 
 
 # 4 ----------------添加换行符
-def genWirelessDesc(title, feature_list, image_list, description_image_list, comment_image_list):
+def genWirelessDesc(title, feature_list, image_list, product_feature_div_description_list,
+                                 aplus_feature_div_description_list, comment_image_text_list):
 
     description = addEnter(wap_begin)
 
@@ -46,18 +48,29 @@ def genWirelessDesc(title, feature_list, image_list, description_image_list, com
         for image in image_list:
             description += addEnter(img.replace(img_reg, image))
 
-    # 商家图片
-    if description_image_list and len(description_image_list) > 0:
-        for image in description_image_list:
-            if 'http' in image:
-                description += addEnter(img.replace(img_reg, image))
-            elif u'了解更多' not in image:
-                description += addEnter(txt.replace(txt_reg, image))
+    # 商品描述1
+    if product_feature_div_description_list and len(product_feature_div_description_list) > 0:
+        for content in product_feature_div_description_list:
+            if 'http' in content:
+                description += addEnter(img.replace(img_reg, content))
+            elif u'了解更多' not in content:
+                description += addEnter(txt.replace(txt_reg, content))
 
-    # 评论图片
-    if comment_image_list and len(comment_image_list) > 0:
-        for image in comment_image_list:
-            description += addEnter(img.replace(img_reg, image))
+    # 商品描述2
+    if aplus_feature_div_description_list and len(aplus_feature_div_description_list) > 0:
+        for content in aplus_feature_div_description_list:
+            if 'http' in content:
+                description += addEnter(img.replace(img_reg, content))
+            elif u'了解更多' not in content:
+                description += addEnter(txt.replace(txt_reg, content))
+
+    # 评论
+    if comment_image_text_list and len(comment_image_text_list) > 0:
+        for content in comment_image_text_list:
+            if 'http' in content:
+                description += addEnter(img.replace(img_reg, content))
+            elif u'了解更多' not in content:
+                description += addEnter(txt.replace(txt_reg, content))
 
     # 商家末尾图片
     description += addEnter(img.replace(img_reg, image_end))

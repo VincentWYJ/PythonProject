@@ -1,9 +1,11 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 
 # 1 ----------------模块导入
 import csv
 import sys
+import codecs
 sys.path.append('..')
 from Utils import *
 
@@ -12,12 +14,13 @@ from Utils import *
 def pushData(product_info_list):
     println(u'\n\n打印表格数据------------------------------------------------')
 
-    item_file = open('Items.csv', 'a+', newline='', encoding='UTF-8')
+    item_file = open('Items.csv', 'a+', newline='', encoding='utf-8')
+    item_file.write('utf-8')
     item_writer = csv.writer(item_file, dialect='excel')
     item_writer.writerow(product_info_list)
     item_file.close()
 
-    item_file = open('Items.csv', 'r')
+    item_file = open('Items.csv', 'r' , encoding='utf-8')
     item_reader = csv.reader(item_file)
     for item in item_reader:
         println(item)
