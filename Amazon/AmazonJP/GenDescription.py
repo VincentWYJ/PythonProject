@@ -89,7 +89,7 @@ def genDescription(feature_list, image_list, product_feature_div_description_lis
     description += addEnter(img.replace(img_rep, image_end))
 
     description += addEnter(div_end)
-
+    #description = u''
     println(description)
 
     return description
