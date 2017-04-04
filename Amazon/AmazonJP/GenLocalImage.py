@@ -7,9 +7,8 @@ import os
 import sys
 import shutil
 import re
-from PIL import Image
+from  PIL import Image, ImageFilter, ImageDraw, ImageFont, ImageEnhance, ImageFilter
 import urllib.request
-from ImageReSize import *
 
 sys_path = sys.path[0]
 dir_temp_path = sys.path[0] + '/temp/'
@@ -30,14 +29,15 @@ def GenLocalImage(imageLink, image_format): # image format 600 or 900
         urllib.request.urlretrieve(formated_imageLink, return_name_temp) #获取规定格式的图片
     except: # 应该加异常保护.....后面再完善
         urllib.request.urlretrieve(imageLink, return_name_temp) # 获取原始图片
-
-    im = Image.open(return_name_temp)
-    (x, y) = im.size
-    x_s = x
-    y_s = x / 600
-    out = im.resize((x_s, y_s), Image.ANTIALIAS)
-    out.save(return_name)
-
+    try:
+        imageopened = Image.open(return_name_temp)
+        x,y = imageopened.size
+        x_s = image_format
+        y_s = int((y / x) * image_format)
+        imagesaved = imageopened.resize((x_s, y_s))
+        imagesaved.save(return_name)
+    except IOError:
+        println(u'图片处理模块文件IO错误')
     return return_name
     # 3 ----------------方法测试
     # genImage(None)
