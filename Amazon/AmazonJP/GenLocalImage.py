@@ -15,9 +15,9 @@ dir_temp_path = sys.path[0] + '/temp/'
 dir_path = sys.path[0] + '/Items/'
 #start_name = dir_path+'/805567564a7xxxx'
 #format = '.tbi'
-image_format_left = u'_SL'
+image_format_left = u'._SL'
 image_format_right= u'_'
-change_imagesize_reg = re.compile("_.*_")
+change_imagesize_reg = re.compile("\._.*_")
 
 # 2 ----------------生成tbi格式图片
 def GenLocalImage(imageLink, image_format): # image format 600 or 900

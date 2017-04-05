@@ -4,6 +4,7 @@
 
 # 1 ----------------导入模块
 import sys
+import re
 sys.path.append('..')
 from Utils import *
 from GenLocalImage import *
@@ -53,12 +54,11 @@ def genWirelessDesc(title, feature_list, image_list, product_feature_div_descrip
     # 商品描述1
     if product_feature_div_description_list and len(product_feature_div_description_list) > 0:
         for content in product_feature_div_description_list:
-            if 'http' in content:
+            if re.search(r'.*http.*',content) != None:
                 local_image = GenLocalImage(content,600)
                 description += addEnter(img.replace(img_reg, local_image))
-            #elif u'了解更多' not in content:
             else:
-                description += addEnter(txt.replace(txt_reg, content))
+                description += addEnter(txt.replace(txt_reg, str(content)))
 
     # 商品描述2
     if aplus_feature_div_description_list and len(aplus_feature_div_description_list) > 0:
