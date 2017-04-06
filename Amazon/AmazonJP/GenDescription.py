@@ -9,8 +9,8 @@ from Utils import *
 
 
 # 2 ----------------节点与始末图片声明
-image_begin = 'https://img.alicdn.com/imgextra/i1/32546558/TB25W7YbX5N.eBjSZFmXXboSXXa_!!32546558.jpg?t=1477750314000'
-image_end = 'https://img.alicdn.com/imgextra/i3/32546558/TB26DH4aW9I.eBjy0FeXXXqwFXa_!!32546558.jpg?t=1477750314000'
+image_begin = 'static_images/image_start.jpg'
+image_end = 'static_images/image_end.jpg'
 div_begin = '<div class="a-section a-spacing-medium a-spacing-top-small">'
 div_end = '</div>'
 img_rep = 'image_link'
