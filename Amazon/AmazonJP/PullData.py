@@ -40,6 +40,10 @@ cookie = http.cookiejar.MozillaCookieJar(cookie_filename)
 handler = urllib.request.HTTPCookieProcessor(cookie)
 opener = urllib.request.build_opener(handler)
 
+# re list here
+delete_img_head_reg = re.compile("<img")
+delete_html_head_reg = re.compile("<[^>]*>")
+delete_n_reg = re.compile("\n*")
 
 # 3 ----------------数据获取
 def pullData(html_url):
@@ -304,57 +308,48 @@ def pullData(html_url):
     else:
         product_image_list += image_list
 
-        # re list here
-
-    delete_img_head_reg = re.compile("<img")
-    delete_html_head_reg = re.compile("<[^>]*>")
-    delete_n_reg = re.compile("\n*")
-    search_http_reg = re.compile("src=[^>]*>")
-    change_imagesize_reg = re.compile("_.*_")
-
     # product-description_feature描述描述
-    print(u'description_list--product-description_feature描述: ')
-    product_feature_div_description_list = []
-    product_feature_div_node = bs_obj.find('div', id=re.compile(".*descriptionAndDetails.*"))
+    print(u'product-description_feature描述: ')
+    pd_list = []
+    pd_list_temp = []
+    pd_node = bs_obj.find('div', id=re.compile(".*descriptionAndDetails.*"))
 
-    if product_feature_div_node and len(product_feature_div_node) > 0:
-        image_head_deleted_content_product = delete_img_head_reg.sub('', product_feature_div_node.prettify())
+    if pd_node and len(pd_node) > 0:
+        image_head_deleted_content_product = delete_img_head_reg.sub('', pd_node.prettify())
         html_head_deleted_content_product = delete_html_head_reg.sub('', image_head_deleted_content_product).replace(' ', '').strip('\n')
-        content_list_product = delete_n_reg.split(html_head_deleted_content_product)
-        for content_item_product in content_list_product:
-            if re.search('src=', content_item_product) == None:  # 如果没有网址,文字就翻译
-                content_temp_product = translate(content_item_product).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
+        pd_list_temp = delete_n_reg.split(html_head_deleted_content_product)
+        for pd_item in pd_list_temp:
+            if re.search('http', pd_item) == None:  # 如果没有网址,文字就翻译
+                pd_temp = translate(pd_item).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
             else:  # 图片就截取图片网址
-                content_temp_product = re.search(r"http.*jpg", content_item_product).group(0)  # 获取网址的RE 从百度获得
-            product_feature_div_description_list.append(content_temp_product)  # 附加到list
-            # pure_link_name_product = search_http_reg.search(content_item_product).group().strip("src=").strip("/>").strip('"')
+                pd_temp = re.search(r"http.*(jpg|png)", pd_item).group(0)  # 获取网址的RE 从百度获得
+            pd_list.append(pd_temp)  # 附加到list
+            # pure_link_name_product = search_http_reg.search(pd_item).group().strip("src=").strip("/>").strip('"')
             # content_temp_product = change_imagesize_reg.sub('_SL600_', pure_link_name_product)
-    if len(product_feature_div_description_list) == 0:
+    if len(pd_list) == 0:
         println(u'无')
     else:
-        println(product_feature_div_description_list)
+        println(pd_list)
 
     # aplus_feature_div描述描述
     print(u'description_list--aplus_feature_div描述: ')
-    aplus_feature_div_description_list = []
-    aplus_feature_div_node = bs_obj.find('div', id=re.compile(".*aplus_feature_div.*"))
-
-    if aplus_feature_div_node and len(aplus_feature_div_node) > 0:
-        image_head_deleted_content = delete_img_head_reg.sub('', aplus_feature_div_node.prettify())
+    aplus_list = []
+    aplus_list_temp = []
+    aplus_node = bs_obj.find('div', id=re.compile(".*aplus_feature_div.*"))
+    if aplus_node and len(aplus_node) > 0:
+        image_head_deleted_content = delete_img_head_reg.sub('', aplus_node.prettify())
         html_head_deleted_content = delete_html_head_reg.sub('', image_head_deleted_content).replace(' ', '').strip('\n')
-        content_list = delete_n_reg.split(html_head_deleted_content)
-        for content_item in content_list:
-            if re.search('src=', content_item) == None:  # 如果没有网址,文字就翻译
-                content_temp = translate(content_item).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
+        aplus_list_temp = delete_n_reg.split(html_head_deleted_content)
+        for aplus_item in aplus_list_temp:
+            if re.search('http', aplus_item) == None:  # 如果没有网址,文字就翻译
+                aplus_temp = translate(aplus_item).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
             else:  # 图片就截取图片网址
-                content_temp = re.findall(r"(?<=href=\").+?(?=\")|(?<=href=\').+?(?=\')",content_item)  # 获取网址的RE 从百度获得
-            aplus_feature_div_description_list.append(content_temp)  # 附加到list
-            # pure_link_name = search_http_reg.search(content_item).group().strip("src=").strip("/>").strip('"')
-            # content_temp = change_imagesize_reg.sub('_SL600_', pure_link_name)
-    if len(aplus_feature_div_description_list) == 0:
+                aplus_temp = re.search(r"http.*(jpg|png)", aplus_item).group(0)  # 获取网址的RE 从百度获得
+            aplus_list.append(aplus_temp)  # 附加到list
+    if len(aplus_list) == 0:
         println(u'无')
     else:
-        println(aplus_feature_div_description_list)
+        println(aplus_list)
 
     # 商品问答环节
     print(u'question_dict--商品问答环节: ')
@@ -365,14 +360,11 @@ def pullData(html_url):
         html_head_deleted_content_question = delete_html_head_reg.sub('', question_node.prettify()).replace(' ','').strip('\n')
         question_list_temp = delete_n_reg.split(html_head_deleted_content_question)
         for question_item in question_list_temp:
-            if re.search('src=', question_item) == None:  # 如果没有网址,文字就翻译
-                question_item_temp = translate(question_item).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
+            if re.search('http', question_item) == None:  # 如果没有网址,文字就翻译
+                question_temp = translate(question_item).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
             else:  # 图片就截取图片网址
-                question_item_temp = re.findall(r"(?<=href=\").+?(?=\")|(?<=href=\').+?(?=\')",question_item)  # 获取网址的RE 从百度获得
-            question_list.append(question_item_temp)  # 附加到list
-            # pure_link_name_question = search_http_reg.search(question_item).group().strip("src=").strip("/>").strip('"')
-            # question_item_temp = change_imagesize_reg.sub('_SL600_', pure_link_name_question)
-
+                question_temp = re.search(r"http.*(jpg|png)", question_item).group(0)  # 获取网址的RE 从百度获得
+            question_list.append(question_temp)  # 附加到list
     if len(question_list) == 0:
         println(u'无')
     else:
@@ -380,31 +372,29 @@ def pullData(html_url):
 
     # 客户评论
     print(u'comment_image_list--客户图片评论: ')
-    comment_image_text_list = []
-    content_list_comment = []
+    comment_list = []
+    comment_list_temp = []
     comment_node = bs_obj.find('', id=re.compile(".*customer-reviews_feature_div.*"))
     if comment_node and len(comment_node) > 0:
         image_head_deleted_content_comment = delete_img_head_reg.sub('', comment_node.prettify())
         html_head_deleted_content_comment = delete_html_head_reg.sub('', image_head_deleted_content_comment).replace(' ', '').strip('\n')
-        content_list_comment = delete_n_reg.split(html_head_deleted_content_comment)
-        for content_item_comment in content_list_comment:
-            if re.search('src=', content_item_comment) == None:  # 如果没有网址,文字就翻译
-                content_temp_comment = translate(content_item_comment).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
+        comment_list_temp = delete_n_reg.split(html_head_deleted_content_comment)
+        for comment_item in comment_list_temp:
+            if re.search('http', comment_item) == None:  # 如果没有网址,文字就翻译
+                comment_temp = translate(comment_item).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
             else:  # 图片就截取图片网址
-                pure_link_name_comment = re.findall(r"(?<=href=\").+?(?=\")|(?<=href=\').+?(?=\')", content_item_comment) # 获取网址的RE 从百度获得
-            comment_image_text_list.append(content_temp_comment)  # 附加到list
-            # pure_link_name_comment = search_http_reg.search(content_item_comment).group().strip("src=").strip("/>").strip('"')
-            # content_temp_comment = change_imagesize_reg.sub('_SL600_', pure_link_name_comment)
-    if len(comment_image_text_list) == 0:
+                comment_temp = re.search(r"http.*(jpg|png)", comment_item).group(0) # 获取网址的RE 从百度获得
+            comment_list.append(comment_temp)  # 附加到list
+    if len(comment_list) == 0:
         println(u'无')
     else:
-        println(comment_image_text_list)
+        println(comment_list)
 
     # 客户文字评论
     print(u'comment_text_list--客户文字评论: ')
     comment_text_list = []
 
-    description = genDescription(feature_list, image_list, product_feature_div_description_list, aplus_feature_div_description_list,comment_image_text_list)
+    description = genDescription(feature_list, image_list, pd_list, aplus_list,comment_list)
 
     # product_info_dict['description'] = description
     product_info_list.append(description)
@@ -588,7 +578,7 @@ def pullData(html_url):
     product_info_list.append(custom_design_flag)
 
     # 3.54 无线详情
-    wireless_desc = genWirelessDesc(title, feature_list, image_list, product_feature_div_description_list, aplus_feature_div_description_list,comment_image_text_list)
+    wireless_desc = genWirelessDesc(title, feature_list, image_list, pd_list, aplus_list,comment_list)
     # product_info_dict['wireless_desc'] = wireless_desc
     product_info_list.append(wireless_desc)
 
