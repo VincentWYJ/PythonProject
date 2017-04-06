@@ -11,8 +11,8 @@ from GenLocalImage import *
 
 
 # 2 ----------------节点与始末图片声明
-image_begin = 'static_images/start_image.jpg'
-image_end = 'static_images/end_image.jpg'
+image_begin = 'static_images/image_start.jpg'
+image_end = 'static_images/image_end.jpg'
 wap_begin = '<wapDesc>'
 wap_end = '</wapDesc>'
 short = '<shortDesc>short_content</shortDesc>'
