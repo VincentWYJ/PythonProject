@@ -380,19 +380,14 @@ def pullData(html_url):
         html_head_deleted_content_comment = delete_html_head_reg.sub('', image_head_deleted_content_comment).replace(' ', '').strip('\n')
         comment_list_temp = delete_n_reg.split(html_head_deleted_content_comment)
         for comment_item in comment_list_temp:
-            if re.search('http', comment_item) == None:  # 如果没有网址,文字就翻译
-                comment_temp = translate(comment_item).replace('\n', '').replace('\'', '').replace('[', '').replace(']', '').replace('【', '').replace('】', '')
-            else:  # 图片就截取图片网址
-                comment_temp = re.search(r"http.*(jpg|png)", comment_item).group(0) # 获取网址的RE 从百度获得
-            comment_list.append(comment_temp)  # 附加到list
+            if re.search(r"http.*(jpg|png)", comment_item) != None:  # 如果没有网址,文字就翻译
+                comment_temp = re.search(r"http[^(\")]*(jpg|png)", comment_item).group(0) # 获取网址的RE 从百度获得
+                comment_list.append(comment_temp)  # 附加到list
     if len(comment_list) == 0:
         println(u'无')
     else:
         println(comment_list)
 
-    # 客户文字评论
-    print(u'comment_text_list--客户文字评论: ')
-    comment_text_list = []
 
     description = genDescription(feature_list, image_list, pd_list, aplus_list,comment_list)
 

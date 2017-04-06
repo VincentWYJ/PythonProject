@@ -28,8 +28,8 @@ def addEnter(text):
 
 
 # 4 ----------------添加换行符
-def genDescription(feature_list, image_list, product_feature_div_description_list,
-                                 aplus_feature_div_description_list, comment_image_text_list):
+def genDescription(feature_list, image_list, pd_list,
+                                 aplus_list, comment_list):
     img = '<img src="image_link">'
 
     description = addEnter(div_begin)
@@ -59,28 +59,28 @@ def genDescription(feature_list, image_list, product_feature_div_description_lis
             description += addEnter(img.replace(img_rep, image))
 
     # 商品图片描述1
-    if product_feature_div_description_list and len(product_feature_div_description_list) > 0:
+    if pd_list and len(pd_list) > 0:
         description += addEnter(br)
         description += addEnter('商家图片1：')
-        for image in product_feature_div_description_list:
+        for image in pd_list:
             if 'http' in image:
                 description += addEnter(br)
                 description += addEnter(img.replace(img_rep, image))
 
     # 商品图片描述2
-    if aplus_feature_div_description_list and len(aplus_feature_div_description_list) > 0:
+    if aplus_list and len(aplus_list) > 0:
         description += addEnter(br)
         description += addEnter('商家图片2：')
-        for image in aplus_feature_div_description_list:
+        for image in aplus_list:
             if 'http' in image:
                 description += addEnter(br)
                 description += addEnter(img.replace(img_rep, image))
 
     # 评论
-    if comment_image_text_list and len(comment_image_text_list) > 0:
+    if comment_list and len(comment_list) > 0:
         description += addEnter(br)
         description += addEnter('评论图片：')
-        for image in comment_image_text_list:
+        for image in comment_list:
             description += addEnter(br)
             description += addEnter(img.replace(img_rep, image))
 
