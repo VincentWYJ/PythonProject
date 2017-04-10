@@ -6,6 +6,7 @@
 import sys
 sys.path.append('..')
 from Utils import *
+from GenLocalImage import *
 
 
 # 2 ----------------节点与始末图片声明
@@ -45,9 +46,10 @@ def genDescription(feature_list, image_list, product_feature_div_description_lis
         description += addEnter('商品特点：')
         description += addEnter(ul_begin)
         for feature in feature_list:
-            description += li_begin
-            description += feature
-            description += addEnter(li_end)
+            if u'请输入型号验证' not in feature:
+                description += li_begin
+                description += feature
+                description += addEnter(li_end)
         description += addEnter(ul_end)
 
     # 商品图片
@@ -56,7 +58,8 @@ def genDescription(feature_list, image_list, product_feature_div_description_lis
         description += addEnter('商品图片：')
         for image in image_list:
             description += addEnter(br)
-            description += addEnter(img.replace(img_rep, image))
+            local_image = GenLocalImage(image, 750)
+            description += addEnter(img.replace(img_rep, local_image))
 
     # 商品图片描述1
     if product_feature_div_description_list and len(product_feature_div_description_list) > 0:
@@ -65,7 +68,8 @@ def genDescription(feature_list, image_list, product_feature_div_description_lis
         for image in product_feature_div_description_list:
             if 'http' in image:
                 description += addEnter(br)
-                description += addEnter(img.replace(img_rep, image))
+                local_image = GenLocalImage(image, 750)
+                description += addEnter(img.replace(img_rep, local_image))
 
     # 商品图片描述2
     if aplus_feature_div_description_list and len(aplus_feature_div_description_list) > 0:
@@ -74,7 +78,8 @@ def genDescription(feature_list, image_list, product_feature_div_description_lis
         for image in aplus_feature_div_description_list:
             if 'http' in image:
                 description += addEnter(br)
-                description += addEnter(img.replace(img_rep, image))
+                local_image = GenLocalImage(image, 750)
+                description += addEnter(img.replace(img_rep, local_image))
 
     # 评论
     if comment_image_text_list and len(comment_image_text_list) > 0:
@@ -82,7 +87,8 @@ def genDescription(feature_list, image_list, product_feature_div_description_lis
         description += addEnter('评论图片：')
         for image in comment_image_text_list:
             description += addEnter(br)
-            description += addEnter(img.replace(img_rep, image))
+            local_image = GenLocalImage(image, 750)
+            description += addEnter(img.replace(img_rep, local_image))
 
     # 商家末尾图片
     description += addEnter(br)

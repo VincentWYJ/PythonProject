@@ -43,7 +43,8 @@ def genWirelessDesc(title, feature_list, image_list, product_feature_div_descrip
     # 商品特点
     if feature_list and len(feature_list) > 0:
         for feature in feature_list:
-            description += addEnter(txt.replace(txt_reg, feature))
+            if u'请输入型号验证' not in feature:
+                description += addEnter(txt.replace(txt_reg, feature))
 
     # 商品图片
     if image_list and len(image_list) > 0:
@@ -55,7 +56,7 @@ def genWirelessDesc(title, feature_list, image_list, product_feature_div_descrip
     if product_feature_div_description_list and len(product_feature_div_description_list) > 0:
         for content in product_feature_div_description_list:
             if re.search(r'.*http.*',content) != None:
-                local_image = GenLocalImage(content,600)
+                local_image = GenLocalImage(content, 600)
                 description += addEnter(img.replace(img_reg, local_image))
             else:
                 description += addEnter(txt.replace(txt_reg, str(content)))
@@ -64,7 +65,7 @@ def genWirelessDesc(title, feature_list, image_list, product_feature_div_descrip
     if aplus_feature_div_description_list and len(aplus_feature_div_description_list) > 0:
         for content in aplus_feature_div_description_list:
             if 'http' in content:
-                local_image = GenLocalImage(content,600)
+                local_image = GenLocalImage(content, 600)
                 description += addEnter(img.replace(img_reg, local_image))
             # elif u'了解更多' not in content:
             else:
@@ -74,7 +75,7 @@ def genWirelessDesc(title, feature_list, image_list, product_feature_div_descrip
     if comment_image_text_list and len(comment_image_text_list) > 0:
         for content in comment_image_text_list:
             if 'http' in content:
-                local_image = GenLocalImage(content,600)
+                local_image = GenLocalImage(content, 600)
                 description += addEnter(img.replace(img_reg, local_image))
             # elif u'了解更多' not in content:
             else:
