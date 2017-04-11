@@ -493,6 +493,7 @@ def pullData(html_url):
 
     # 3.37 数字ID
     num_id = u'543000000000'
+    #8436014361 不包邮代码
     # product_info_dict['num_id'] = num_id
     product_info_list.append(num_id)
 
@@ -538,12 +539,12 @@ def pullData(html_url):
     product_info_list.append(features)
 
     # 3.46 采购地
-    buyareatype = 2
+    buyareatype = 1
     # product_info_dict['buyareatype'] = buyareatype
     product_info_list.append(buyareatype)
 
     # 3.47 库存类型
-    global_stock_type = 2
+    global_stock_type = 1
     # product_info_dict['global_stock_type'] = global_stock_type
     product_info_list.append(global_stock_type)
 
@@ -601,8 +602,8 @@ def pullData(html_url):
     subtitle_temp=str()
     for text in feature_list:
         subtitle_temp += text
-    #subtitle = subtitle_temp[0:139]
-    subtitle = u''
+    subtitle = subtitle_temp[0:139]
+    #subtitle = u''
     # product_info_dict['subtitle'] = subtitle
     product_info_list.append(subtitle)
     println(u'宝贝卖点: %s' % subtitle)
