@@ -25,6 +25,22 @@ def GenLocalImage(imageLink, image_format): # image format 600 or 900
     return_name = dir_path + imageLink.replace('https://', '').replace('/', '_')
     formated_image_format = image_format_left + str(image_format) + image_format_right
     formated_imageLink = change_imagesize_reg.sub(formated_image_format, imageLink)
+    # 处理多个图片链接连在一起的情况
+    if '"' in return_name_temp:
+        print('########################################################')
+        print(return_name_temp)
+        return_name_temp = return_name_temp.replace('"', '')
+        print(return_name_temp)
+    if '"' in return_name:
+        print('########################################################')
+        print(return_name)
+        return_name = return_name.replace('"', '')
+        print(return_name)
+    if '"' in formated_imageLink:
+        print('########################################################')
+        print(formated_imageLink)
+        formated_imageLink = formated_imageLink[0, formated_imageLink.find('"')] + "'"
+        print(formated_imageLink)
     try:
         urllib.request.urlretrieve(formated_imageLink, return_name_temp) #获取规定格式的图片
     except: # 应该加异常保护.....后面再完善
