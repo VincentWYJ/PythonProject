@@ -8,10 +8,9 @@ sys.path.append('..')
 from Utils import *
 from GenLocalImage import *
 
-
 # 2 ----------------节点与始末图片声明
-image_begin = 'static_images/image_start.jpg'
-image_end = 'static_images/image_end.jpg'
+image_begin = sys.path[0] + '/static_images/image_start.jpg'
+image_end = sys.path[0]+ '/static_images/image_end.jpg'
 div_begin = '<div class="a-section a-spacing-medium a-spacing-top-small">'
 div_end = '</div>'
 img_rep = 'image_link'
