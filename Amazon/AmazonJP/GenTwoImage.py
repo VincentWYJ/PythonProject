@@ -17,5 +17,5 @@ def genImage():
         urllib.request.urlretrieve(image_list[i], name[i])
 
 
-# 3 ----------------方法测试
-genImage()
+# 2.1 ----------------方法测试
+# genImage()

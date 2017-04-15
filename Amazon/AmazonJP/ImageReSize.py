@@ -40,7 +40,6 @@ class Graphics:
         size_tmp = os.path.getsize(source_image)
         q = 100
         while size_tmp > size and q > 0:
-            #print q
             out = im.resize(im.size, image.ANTIALIAS)
             out.save(destination_image, quality=q)
             size_tmp = os.path.getsize(destination_image)

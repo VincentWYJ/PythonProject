@@ -29,8 +29,7 @@ def addEnter(text):
 
 
 # 4 ----------------添加换行符
-def genWirelessDesc(title, feature_list, image_list, product_feature_div_description_list,
-                                 aplus_feature_div_description_list, comment_image_text_list):
+def genWirelessDesc(title, feature_list, image_list, pd_list, aplus_list, comment_list):
 
     description = addEnter(wap_begin)
 
@@ -53,31 +52,29 @@ def genWirelessDesc(title, feature_list, image_list, product_feature_div_descrip
             description += addEnter(img.replace(img_reg, local_image))
 
     # 商品描述1
-    if product_feature_div_description_list and len(product_feature_div_description_list) > 0:
-        for content in product_feature_div_description_list:
-            if re.search(r'.*http.*',content) != None:
+    if pd_list and len(pd_list) > 0:
+        for content in pd_list:
+            if re.search(r'.*http.*', content) != None:
                 local_image = GenLocalImage(content, 600)
                 description += addEnter(img.replace(img_reg, local_image))
             else:
                 description += addEnter(txt.replace(txt_reg, str(content)))
 
     # 商品描述2
-    if aplus_feature_div_description_list and len(aplus_feature_div_description_list) > 0:
-        for content in aplus_feature_div_description_list:
+    if aplus_list and len(aplus_list) > 0:
+        for content in aplus_list:
             if 'http' in content:
                 local_image = GenLocalImage(content, 600)
                 description += addEnter(img.replace(img_reg, local_image))
-            # elif u'了解更多' not in content:
             else:
                 description += addEnter(txt.replace(txt_reg, content))
 
     # 评论
-    if comment_image_text_list and len(comment_image_text_list) > 0:
-        for content in comment_image_text_list:
+    if comment_list and len(comment_list) > 0:
+        for content in comment_list:
             if 'http' in content:
                 local_image = GenLocalImage(content, 600)
                 description += addEnter(img.replace(img_reg, local_image))
-            # elif u'了解更多' not in content:
             else:
                 description += addEnter(txt.replace(txt_reg, content))
 
@@ -85,8 +82,6 @@ def genWirelessDesc(title, feature_list, image_list, product_feature_div_descrip
     description += addEnter(img.replace(img_reg, image_end))
 
     description += addEnter(wap_end)
-
-    #description = u''
 
     println(description)
 
